@@ -204,7 +204,7 @@ public class ChargerRepositoryImpl implements ChargerRepository {
     }
 
     @Override
-    public BigDecimal getRechargerAmountByDotIdAndRepairDate(Long dotid, Date date) {
+    public BigDecimal getRechargerAmountByDotIdAndDate(Long dotid, Date date) {
         StringBuffer countSql = new StringBuffer("SELECT SUM(sumpower) FROM charger_socket_usrrecord WHERE ");
         countSql.append(" createtime>" + DateUtil.getStartDate(date));
         countSql.append(" and  createtime<" + DateUtil.getEndDate(date));

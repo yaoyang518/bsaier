@@ -41,6 +41,6 @@ public interface ChargerRepository {
 
     BigDecimal getRechargerAmountByCityIdAndStidAndDate(Long cityId, Long stid, Date date);
 
-    BigDecimal getRechargerAmountByDotIdAndRepairDate(Long dotid, Date date);
+    BigDecimal getRechargerAmountByDotIdAndDate(Long dotid, Date date);
 
 }
