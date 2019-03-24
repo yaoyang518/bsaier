@@ -2,6 +2,7 @@ package com.yaoyang.bser.controller;
 
 
 import com.yaoyang.bser.base.ApiResult;
+import com.yaoyang.bser.constants.SiteConstants;
 import com.yaoyang.bser.entity.CityServer;
 import com.yaoyang.bser.entity.User;
 import com.yaoyang.bser.enumeration.ResponseCode;
@@ -45,25 +46,25 @@ public class IndexController {
     @GetMapping("/totalAirpowerCount")
     @ApiOperation(value = "总智能插座数-前端")
     public JSONArray totalAirpowerCount(HttpServletRequest request) {
-        return getJsonArray(request, 2L);
+        return getJsonArray(request, SiteConstants.AIRPOWER_ID);
     }
 
     @GetMapping("/totalAmmeterCount")
     @ApiOperation(value = "总智能电表数-前端")
     public JSONArray totalAmmeterCount(HttpServletRequest request) {
-        return getJsonArray(request, 3L);
+        return getJsonArray(request, SiteConstants.AMMETER_ID);
     }
 
     @GetMapping("/totalSmokeCount")
     @ApiOperation(value = "总智能烟感数-前端")
     public JSONArray totalSmokeCount(HttpServletRequest request) {
-        return getJsonArray(request, 4L);
+        return getJsonArray(request, SiteConstants.SOMKE_ID);
     }
 
     @GetMapping("/totalChargerCount")
     @ApiOperation(value = "总智能充电桩数-前端")
     public JSONArray totalChargerCount(HttpServletRequest request) {
-        return getJsonArray(request, 1L);
+        return getJsonArray(request, SiteConstants.CHARGER_ID);
     }
 
     private JSONArray getJsonArray(HttpServletRequest request, Long dtId) {

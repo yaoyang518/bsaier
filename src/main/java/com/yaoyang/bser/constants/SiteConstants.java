@@ -18,4 +18,12 @@ public class SiteConstants {
      * 整型常量
      */
     public static final int DEFAULT_PAGE_SIZE = 10;
+
+    public static final Long CHARGER_ID = 1L;
+
+    public static final Long AIRPOWER_ID = 2L;
+
+    public static final Long AMMETER_ID = 3L;
+
+    public static final Long SOMKE_ID = 4L;
 }
