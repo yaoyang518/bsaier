@@ -34,9 +34,9 @@ public class IndexRepositoryImpl implements IndexRepository {
     public Integer getDeviceCountByDtidAndCityIdAndStid(Long dtId, Long cityId, Long stid) {
         StringBuffer countSql = new StringBuffer("select COUNT(*) from boxs WHERE staus = 1 and ");
         if (dtId != null) {
-            countSql.append("and dtid=" + dtId);
+            countSql.append("dtid=" + dtId + " and ");
         }
-        countSql.append("dotid in(SELECT dotid FROM dot_server WHERE districtID in(SELECT districtID FROM sys_destrict WHERE cityID=:cityId) and stid =:stid) ");
+        countSql.append("dotid in(SELECT dotid FROM dot_server WHERE districtID in(SELECT districtID FROM sys_destrict WHERE cityID=" + cityId + ") and stid =" + stid + ") ");
         Query query = entityManager.createNativeQuery(countSql.toString());
         Integer total = Integer.parseInt(query.getSingleResult().toString());
         return total;
@@ -44,9 +44,9 @@ public class IndexRepositoryImpl implements IndexRepository {
 
     @Override
     public Integer getDeviceCountByDtidAndDotId(Long dtId, Long dotid) {
-        StringBuffer countSql = new StringBuffer("select COUNT(*) from boxs where staus=1 and dotid=:dotid ");
+        StringBuffer countSql = new StringBuffer("select COUNT(*) from boxs where staus=1 and dotid= " + dotid);
         if (dtId != null) {
-            countSql.append("and dtid=" + dtId);
+            countSql.append(" and dtid=" + dtId);
         }
         Query query = entityManager.createNativeQuery(countSql.toString());
         Integer total = Integer.parseInt(query.getSingleResult().toString());

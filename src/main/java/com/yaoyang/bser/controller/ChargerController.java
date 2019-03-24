@@ -46,7 +46,7 @@ public class ChargerController {
             jsonObject.put("value", 0);
         }
         if (user.getLevel() == 3) {
-            jsonObject.put("value", chargerRepository.getDeviceChildCountByDtid(SiteConstants.CHARGER_ID));
+            jsonObject.put("value", chargerRepository.getDeviceChildCountByDtidAndDotId(SiteConstants.CHARGER_ID,user.getDotid()));
         } else if (user.getLevel() == 2) {
             CityServer cityServer = cityServerRepository.findByCid(user.getCid());
             jsonObject.put("value", chargerRepository.getDeviceChildCountByDtidAndCityIdAndStid(SiteConstants.CHARGER_ID,cityServer.getCityID(), cityServer.getStid()));

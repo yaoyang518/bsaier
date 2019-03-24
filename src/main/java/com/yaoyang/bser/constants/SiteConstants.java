@@ -4,6 +4,7 @@ import com.yaoyang.bser.util.HttpUtil;
 import net.sf.json.JSONObject;
 import org.joda.time.DateTime;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -19,11 +20,13 @@ public class SiteConstants {
      */
     public static final int DEFAULT_PAGE_SIZE = 10;
 
-    public static final Long CHARGER_ID = 1L;
+    public static final long CHARGER_ID = 1L;
 
-    public static final Long AIRPOWER_ID = 2L;
+    public static final long AIRPOWER_ID = 2L;
 
-    public static final Long AMMETER_ID = 3L;
+    public static final long AMMETER_ID = 3L;
 
-    public static final Long SOMKE_ID = 4L;
+    public static final long SOMKE_ID = 4L;
+
+    public static final double ELECTRICITY_PRICE = 1.2;
 }
