@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>登录</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link rel="alternate icon" type="image/png" href="assets/i/favicon.png">
+  <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
+  <link rel="stylesheet" href="site/lss.css"/>
+  <script src="site/jquery-3.2.1.min.js"></script>
+  <script src="assets/js/amazeui.js"></script>
+  <script src="site/login.js"></script>
+  <style>
+    .header {
+      text-align: center;
+    }
+    .header h1 {
+      font-size: 200%;
+      color: #333;
+      margin-top: 30px;
+    }
+    .header p {
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="lss-bg lss-login-main">
+    <div class="am-text-center" style="padding-top: 40px;margin-bottom: 20px">
+      <img class="am-circle" src="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/1000/h/1000/q/80" width="100" height="100"/>
+    </div>
+    <div class="am-text-center"><h2>登录</h2></div>
+    <div class="am-text-center am-text-sm lss-text-bold am-margin-bottom-lg" >使用您的 管理员 账号</div>
+    <form method="post" class="am-form lss-login-form">
+      <div class="am-cf am-g-collapse lss-phone">
+        <input name="" id="phone" class="lss-input" placeholder="请输入账号" value="">
+      </div>
+      <label id="phoneErr" class="am-text-danger am-text-sm am-hide"></label>
+      <br>
+      <div class="am-cf am-g-collapse lss-password">
+        <input name="" id="password" type="password" class="lss-input" placeholder="请输入密码" value="">
+      </div>
+      <label id="codeWarn" class="am-text-danger am-text-sm am-hide"></label>
+      <br>
+      <div class="am-cf am-margin-top-xl">
+        <div  name="" id="lss-login" class="am-btn am-btn-primary lss-bg-blue am-btn-sm am-text-sm am-fr">登录</div>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

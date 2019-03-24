@@ -14,12 +14,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.swagger.annotations.ApiOperation;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * 用户接口
@@ -34,17 +32,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/login")
-    @ApiOperation(value = "登陆-前端",notes = "level:1是超管，2是市管，3是网管")
-    public ApiResult login(HttpServletRequest request, @RequestParam(value = "loginName") String loginName,
+    @GetMapping("/login")
+    @ApiOperation(value = "登陆-前端", notes = "level:1是超管，2是市管，3是网管")
+    public ApiResult login(HttpServletRequest request,@RequestParam(value = "loginName") String loginName,
                            @RequestParam(value = "password") String password) {
-        if (!CommonUtil.isRightPhone(loginName)) {
-            return ApiResultBuilder.buildFailedResult(ResponseCode.MOBILE_ILLEGAL);
-        }
-        User user = userService.findByMobileAndPassword(loginName, password);
+        User user = userService.findByUsernameAndPassword(loginName, password);
         if (user == null) {
             return ApiResultBuilder.buildFailedResult(ResponseCode.PASSWORD_ERROR, "账号或密码错误", null);
         }
+        HttpSession session = request.getSession();
+        session.setAttribute("usrid", user.getUserid());
         return ApiResultBuilder.buildSuccessResult(ResponseCode.OPT_SUCCESS, user);
     }
 
