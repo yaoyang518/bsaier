@@ -28,5 +28,9 @@ public class SiteConstants {
 
     public static final long SOMKE_ID = 4L;
 
+    public static final int MANAGER_TYPE = 1;
+
+    public static final int EMPLOYEE_TYPE = 2;
+
     public static final BigDecimal ELECTRICITY_PRICE = new BigDecimal(1.2);
 }
