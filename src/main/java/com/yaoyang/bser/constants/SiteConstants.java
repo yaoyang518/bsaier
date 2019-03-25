@@ -28,5 +28,5 @@ public class SiteConstants {
 
     public static final long SOMKE_ID = 4L;
 
-    public static final double ELECTRICITY_PRICE = 1.2;
+    public static final BigDecimal ELECTRICITY_PRICE = new BigDecimal(1.2);
 }

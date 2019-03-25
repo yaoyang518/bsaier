@@ -73,16 +73,17 @@ public class IndexController {
         JSONObject jsonObject = new JSONObject();
         if (user == null) {
             jsonObject.put("value", 0);
-        }
-        if (user.getLevel() == 3) {
-            jsonObject.put("value", indexRepository.getDeviceCountByDtidAndDotId(dtId, user.getDotid()));
-        } else if (user.getLevel() == 2) {
-            CityServer cityServer = cityServerRepository.findByCid(user.getCid());
-            jsonObject.put("value", indexRepository.getDeviceCountByDtidAndCityIdAndStid(dtId, cityServer.getCityID(), cityServer.getStid()));
-        } else if (user.getLevel() == 1) {
-            jsonObject.put("value", indexRepository.getDeviceCountByDtid(dtId));
         } else {
-            jsonObject.put("value", 0);
+            if (user.getLevel() == 3) {
+                jsonObject.put("value", indexRepository.getDeviceCountByDtidAndDotId(dtId, user.getDotid()));
+            } else if (user.getLevel() == 2) {
+                CityServer cityServer = cityServerRepository.findByCid(user.getCid());
+                jsonObject.put("value", indexRepository.getDeviceCountByDtidAndCityIdAndStid(dtId, cityServer.getCityID(), cityServer.getStid()));
+            } else if (user.getLevel() == 1) {
+                jsonObject.put("value", indexRepository.getDeviceCountByDtid(dtId));
+            } else {
+                jsonObject.put("value", 0);
+            }
         }
         jsonArray.add(jsonObject);
         return jsonArray;

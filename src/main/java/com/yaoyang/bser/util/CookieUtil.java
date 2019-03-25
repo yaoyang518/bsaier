@@ -28,8 +28,10 @@ public class CookieUtil {
     public static JSONObject cookieToJson(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         JSONObject jsonObject = new JSONObject();
-        for (Cookie cookie : cookies) {
-            jsonObject.put(cookie.getName(), cookie.getValue());
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                jsonObject.put(cookie.getName(), cookie.getValue());
+            }
         }
         return jsonObject;
     }

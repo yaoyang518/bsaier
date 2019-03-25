@@ -58,6 +58,8 @@ public class ChargerRepositoryImpl implements ChargerRepository {
         return total;
     }
 
+    //------------------------------------------------
+
     @Override
     public Integer getRechargerCountByUsed() {
         StringBuffer countSql = new StringBuffer("select COUNT(*) from boxs where staus=1 and boxid in(SELECT DISTINCT (boxid) FROM boxes_child WHERE boxid in (SELECT boxid FROM boxs WHERE dtid=");
@@ -96,6 +98,8 @@ public class ChargerRepositoryImpl implements ChargerRepository {
         return total;
     }
 
+    //----------------------------------------------------------
+
     @Override
     public Integer getRechargerCountByRepair() {
         StringBuffer countSql = new StringBuffer("select COUNT(*) from boxs where staus=1 and boxid in(SELECT boxid FROM boxs_error WHERE staus =0)");
@@ -125,6 +129,8 @@ public class ChargerRepositoryImpl implements ChargerRepository {
         Integer total = Integer.parseInt(query.getSingleResult().toString());
         return total;
     }
+
+    //---------------------------------------------
 
     @Override
     public Integer getRechargerRrequency(Boolean distinct) {

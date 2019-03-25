@@ -29,7 +29,7 @@ public interface AmmeterRepository extends JpaRepository<CityServer, Long> {
 
     @Query(value = "SELECT SUM(electricity_consumption) FROM ammeter_daily_power WHERE `date`>=:start and  `date`<=:end and  " +
             "iccid in(select ICCID from boxs where staus=1 and dotid=:dotid)", nativeQuery = true)
-    BigDecimal getRechargerAmountByDotIdAndRepairDate(@Param("dotid") Long dotid, @Param("start") Date start, @Param("end") Date end);
+    BigDecimal getRechargerAmountByDotIdAndDate(@Param("dotid") Long dotid, @Param("start") Date start, @Param("end") Date end);
 
     @Query(value = "SELECT SUM(overload_time) FROM ammeter_daily_power WHERE `date`>=:start and  `date`<=:end and  " +
             "iccid in(select ICCID from boxs where staus=1 )", nativeQuery = true)
@@ -41,7 +41,7 @@ public interface AmmeterRepository extends JpaRepository<CityServer, Long> {
 
     @Query(value = "SELECT SUM(overload_time) FROM ammeter_daily_power WHERE `date`>=:start and  `date`<=:end and  " +
             "iccid in(select ICCID from boxs where staus=1 and dotid=:dotid)", nativeQuery = true)
-    BigDecimal getOverLoadCountByDotIdAndRepairDate(@Param("dotid") Long dotid, @Param("start") Date start, @Param("end") Date end);
+    BigDecimal getOverLoadCountByDotIdAndDate(@Param("dotid") Long dotid, @Param("start") Date start, @Param("end") Date end);
 
     //分类
     @Query(value = "SELECT SUM(electricity_consumption) FROM ammeter_everyline_dailypower WHERE `date`>=:start and  `date`<=:end and number=:type and  " +
@@ -54,7 +54,7 @@ public interface AmmeterRepository extends JpaRepository<CityServer, Long> {
 
     @Query(value = "SELECT SUM(electricity_consumption) FROM ammeter_everyline_dailypower WHERE `date`>=:start and  `date`<=:end and  number=:type and  " +
             "iccid in(select ICCID from boxs where staus=1 and dotid=:dotid)", nativeQuery = true)
-    BigDecimal getRechargerAmountByDotIdAndRepairDateAndType(@Param("dotid") Long dotid, @Param("start") Date start, @Param("end") Date end, @Param("type") Integer type);
+    BigDecimal getRechargerAmountByDotIdAndDateAndType(@Param("dotid") Long dotid, @Param("start") Date start, @Param("end") Date end, @Param("type") Integer type);
 
     @Query(value = "SELECT SUM(overload_time) FROM ammeter_everyline_dailypower WHERE `date`>=:start and  `date`<=:end and  number=:type and  " +
             "iccid in(select ICCID from boxs where staus=1 )", nativeQuery = true)
@@ -66,7 +66,7 @@ public interface AmmeterRepository extends JpaRepository<CityServer, Long> {
 
     @Query(value = "SELECT SUM(overload_time) FROM ammeter_everyline_dailypower WHERE `date`>=:start and  `date`<=:end and  number=:type and  " +
             "iccid in(select ICCID from boxs where staus=1 and dotid=:dotid)", nativeQuery = true)
-    Integer getOverLoadCountByDotIdAndRepairDateAndType(@Param("dotid") Long dotid, @Param("start") Date start, @Param("end") Date end, @Param("type") Integer type);
+    Integer getOverLoadCountByDotIdAndDateAndType(@Param("dotid") Long dotid, @Param("start") Date start, @Param("end") Date end, @Param("type") Integer type);
 
 
 }
