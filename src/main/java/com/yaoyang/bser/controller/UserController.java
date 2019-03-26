@@ -7,12 +7,7 @@ import com.yaoyang.bser.entity.User;
 import com.yaoyang.bser.enumeration.ResponseCode;
 import com.yaoyang.bser.service.UserService;
 import com.yaoyang.bser.util.ApiResultBuilder;
-import com.yaoyang.bser.util.CommonUtil;
-import com.yaoyang.bser.util.Md5Util;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.swagger.annotations.ApiOperation;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +29,7 @@ public class UserController {
 
     @GetMapping("/login")
     @ApiOperation(value = "登陆-前端", notes = "level:1是超管，2是市管，3是网管")
-    public ApiResult login(HttpServletRequest request,@RequestParam(value = "loginName") String loginName,
+    public ApiResult login(HttpServletRequest request, @RequestParam(value = "loginName") String loginName,
                            @RequestParam(value = "password") String password) {
         User user = userService.findByUsernameAndPassword(loginName, password);
         if (user == null) {

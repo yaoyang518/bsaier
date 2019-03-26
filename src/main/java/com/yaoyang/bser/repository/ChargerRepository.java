@@ -1,5 +1,7 @@
 package com.yaoyang.bser.repository;
 
+import net.sf.json.JSONArray;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -55,5 +57,6 @@ public interface ChargerRepository {
     BigDecimal getRechargerAmountByCityIdAndStidAndDate(Long cityId, Long stid, Date date);
 
     BigDecimal getRechargerAmountByDotIdAndDate(Long dotid, Date date);
+
 
 }

@@ -4,6 +4,7 @@ import com.yaoyang.bser.constants.SiteConstants;
 import com.yaoyang.bser.repository.ChargerRepository;
 import com.yaoyang.bser.repository.IndexRepository;
 import com.yaoyang.bser.util.DateUtil;
+import net.sf.json.JSONArray;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -281,5 +282,6 @@ public class ChargerRepositoryImpl implements ChargerRepository {
         BigDecimal total = new BigDecimal(query.getSingleResult().toString());
         return total;
     }
+
 }
 

@@ -148,9 +148,9 @@ public class AmmeterController {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
                 jsonObject.put("value", ammeterRepository.getRechargerAmountByCityIdAndStidAndDateAndType(cityServer.getCityID(), cityServer.getStid(), DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type));
             } else if (user.getLevel() == 1) {
-                if(user.getStid()!=null){
-                    jsonObject.put("value", ammeterRepository.getRechargerAmountByDateAndTypeAndStid(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type,user.getStid()));
-                }else{
+                if (user.getStid() != null) {
+                    jsonObject.put("value", ammeterRepository.getRechargerAmountByDateAndTypeAndStid(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type, user.getStid()));
+                } else {
                     jsonObject.put("value", ammeterRepository.getRechargerAmountByDateAndType(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type));
                 }
             } else {
@@ -205,9 +205,9 @@ public class AmmeterController {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
                 jsonObject.put("value", ammeterRepository.getRechargerAmountByCityIdAndStidAndDateAndType(cityServer.getCityID(), cityServer.getStid(), DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type).multiply(SiteConstants.ELECTRICITY_PRICE));
             } else if (user.getLevel() == 1) {
-                if(user.getStid()!=null){
-                    jsonObject.put("value", ammeterRepository.getRechargerAmountByDateAndTypeAndStid(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type,user.getStid()).multiply(SiteConstants.ELECTRICITY_PRICE));
-                }else {
+                if (user.getStid() != null) {
+                    jsonObject.put("value", ammeterRepository.getRechargerAmountByDateAndTypeAndStid(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type, user.getStid()).multiply(SiteConstants.ELECTRICITY_PRICE));
+                } else {
                     jsonObject.put("value", ammeterRepository.getRechargerAmountByDateAndType(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type).multiply(SiteConstants.ELECTRICITY_PRICE));
                 }
             } else {
@@ -262,13 +262,61 @@ public class AmmeterController {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
                 jsonObject.put("value", ammeterRepository.getOverLoadCountByCityIdAndStidAndDateAndType(cityServer.getCityID(), cityServer.getStid(), DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type));
             } else if (user.getLevel() == 1) {
-                if(user.getStid()!=null){
-                    jsonObject.put("value", ammeterRepository.getOverLoadCountByDateAndTypeAndStid(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type,user.getStid()));
-                }else {
+                if (user.getStid() != null) {
+                    jsonObject.put("value", ammeterRepository.getOverLoadCountByDateAndTypeAndStid(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type, user.getStid()));
+                } else {
                     jsonObject.put("value", ammeterRepository.getOverLoadCountByDateAndType(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type));
                 }
             } else {
                 jsonObject.put("value", 0);
+            }
+        }
+        jsonArray.add(jsonObject);
+        return jsonArray;
+    }
+
+
+    @GetMapping("/dotAmmeterSort")
+    @ApiOperation(value = "用电排行-前端")
+    public JSONArray dotAmmeterSort(HttpServletRequest request) {
+        User user = userService.checkUser(request);
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        if (user == null) {
+            jsonObject.put("x", 0);
+            jsonObject.put("y", 0);
+        } else {
+            if (user.getLevel() == 2) {
+                CityServer cityServer = cityServerRepository.findByCid(user.getCid());
+                return ammeterRepository.getDotServerSortByStidAndDateAndCityId(cityServer.getStid(), DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), cityServer.getCityID());
+            } else if (user.getLevel() == 1) {
+                if (user.getStid() != null) {
+                    return ammeterRepository.getDotServerSortByStidAndDate(user.getStid(), DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()));
+                }
+            } else {
+                jsonObject.put("x", 0);
+                jsonObject.put("y", 0);
+            }
+        }
+        jsonArray.add(jsonObject);
+        return jsonArray;
+    }
+
+    @GetMapping("/dotAmmeterMonthSort")
+    @ApiOperation(value = "点位月份用电排行-前端")
+    public JSONArray dotAmmeterMonthSort(HttpServletRequest request) {
+        User user = userService.checkUser(request);
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        if (user == null) {
+            jsonObject.put("x", 0);
+            jsonObject.put("y", 0);
+        } else {
+            if (user.getLevel() == 3) {
+                return ammeterRepository.getDotServerMonthSortByDateAnddotId(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), user.getDotid());
+            } else {
+                jsonObject.put("x", 0);
+                jsonObject.put("y", 0);
             }
         }
         jsonArray.add(jsonObject);
