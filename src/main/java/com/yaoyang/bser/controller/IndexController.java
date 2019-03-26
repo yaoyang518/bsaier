@@ -80,7 +80,11 @@ public class IndexController {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
                 jsonObject.put("value", indexRepository.getDeviceCountByDtidAndCityIdAndStid(dtId, cityServer.getCityID(), cityServer.getStid()));
             } else if (user.getLevel() == 1) {
-                jsonObject.put("value", indexRepository.getDeviceCountByDtid(dtId));
+                if (user.getStid() != null) {
+                    jsonObject.put("value", indexRepository.getDeviceCountByDtidAndStid(dtId, user.getStid()));
+                } else {
+                    jsonObject.put("value", indexRepository.getDeviceCountByDtid(dtId));
+                }
             } else {
                 jsonObject.put("value", 0);
             }

@@ -26,6 +26,8 @@ public class User implements Serializable {
     private String areaadree;
     private int level;
     private int userstaus;
+    private Long stid;
+
 
     public String getMobile() {
         return mobile;
@@ -129,5 +131,13 @@ public class User implements Serializable {
 
     public void setUserstaus(int userstaus) {
         this.userstaus = userstaus;
+    }
+
+    public Long getStid() {
+        return stid;
+    }
+
+    public void setStid(Long stid) {
+        this.stid = stid;
     }
 }

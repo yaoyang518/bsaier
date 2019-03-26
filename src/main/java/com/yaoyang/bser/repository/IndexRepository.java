@@ -19,6 +19,8 @@ public interface IndexRepository {
     //@Query(value = "select COUNT(*) from boxs where staus=1 ", nativeQuery = true)
     Integer getDeviceCountByDtid(Long dtId);
 
+    Integer getDeviceCountByDtidAndStid(Long dtId, Long stid);
+
     //@Query(value = "select COUNT(*) from boxs WHERE staus = 1 and dotid in(SELECT dotid FROM dot_server WHERE districtID in(SELECT districtID FROM sys_destrict WHERE cityID=:cityId) and stid =:stid) ", nativeQuery = true)
     Integer getDeviceCountByDtidAndCityIdAndStid(Long dtId, Long cityId, Long stid);
 

@@ -36,6 +36,20 @@ public class ChargerRepositoryImpl implements ChargerRepository {
     }
 
     @Override
+    public Integer getDeviceChildCountByDtidAndStid(Long dtId, Long stid) {
+        StringBuffer countSql = new StringBuffer("select sum(boxcount) from boxs where staus=1 ");
+        if (dtId != null) {
+            countSql.append("and dtid=" + dtId);
+        }
+        if (stid != null) {
+            countSql.append(" and dotid in(SELECT dotid FROM dot_server WHERE stid =" + stid + ")");
+        }
+        Query query = entityManager.createNativeQuery(countSql.toString());
+        Integer total = Integer.parseInt(query.getSingleResult().toString());
+        return total;
+    }
+
+    @Override
     public Integer getDeviceChildCountByDtidAndCityIdAndStid(Long dtId, Long cityId, Long stid) {
         StringBuffer countSql = new StringBuffer("select sum(boxcount) from boxs WHERE staus = 1 and ");
         if (dtId != null) {
@@ -65,6 +79,18 @@ public class ChargerRepositoryImpl implements ChargerRepository {
         StringBuffer countSql = new StringBuffer("select COUNT(*) from boxs where staus=1 and boxid in(SELECT DISTINCT (boxid) FROM boxes_child WHERE boxid in (SELECT boxid FROM boxs WHERE dtid=");
         countSql.append(SiteConstants.CHARGER_ID);
         countSql.append(") and is_use=1)");
+        Query query = entityManager.createNativeQuery(countSql.toString());
+        Integer total = Integer.parseInt(query.getSingleResult().toString());
+        return total;
+    }
+
+    @Override
+    public Integer getRechargerCountByUsedAndStid(Long stid) {
+        StringBuffer countSql = new StringBuffer("select COUNT(*) from boxs where staus=1 and boxid in(SELECT DISTINCT (boxid) FROM boxes_child WHERE boxid in (SELECT boxid FROM boxs WHERE dtid=");
+        countSql.append(SiteConstants.CHARGER_ID);
+        countSql.append(" and dotid in(SELECT dotid FROM dot_server WHERE stid =");
+        countSql.append(stid);
+        countSql.append(")) and is_use=1)");
         Query query = entityManager.createNativeQuery(countSql.toString());
         Integer total = Integer.parseInt(query.getSingleResult().toString());
         return total;
@@ -109,6 +135,14 @@ public class ChargerRepositoryImpl implements ChargerRepository {
     }
 
     @Override
+    public Integer getRechargerCountByRepairAndStid(Long stid) {
+        StringBuffer countSql = new StringBuffer("select COUNT(*) from boxs where staus=1 and boxid in(SELECT boxid FROM boxs_error WHERE staus =0) and dotid in(SELECT dotid FROM dot_server WHERE stid =" + stid + ")");
+        Query query = entityManager.createNativeQuery(countSql.toString());
+        Integer total = Integer.parseInt(query.getSingleResult().toString());
+        return total;
+    }
+
+    @Override
     public Integer getRechargerCountByCityIdAndStidAndRepair(Long cityId, Long stid) {
         StringBuffer countSql = new StringBuffer("select COUNT(*) from boxs WHERE staus = 1 and dotid in(SELECT dotid FROM dot_server WHERE districtID in(SELECT districtID FROM sys_destrict WHERE cityID=");
         countSql.append(cityId);
@@ -142,6 +176,21 @@ public class ChargerRepositoryImpl implements ChargerRepository {
         }
         countSql.append(" FROM charger_socket_usrrecord WHERE ");
         countSql.append(" boxid in (select boxid from boxs where staus=1 )");
+        Query query = entityManager.createNativeQuery(countSql.toString());
+        Integer total = Integer.parseInt(query.getSingleResult().toString());
+        return total;
+    }
+
+    @Override
+    public Integer getRechargerRrequencyByStid(Boolean distinct, Long stid) {
+        StringBuffer countSql = new StringBuffer("SELECT ");
+        if (distinct) {
+            countSql.append(" COUNT(DISTINCT(openid)) ");
+        } else {
+            countSql.append(" COUNT(*)");
+        }
+        countSql.append(" FROM charger_socket_usrrecord WHERE ");
+        countSql.append(" boxid in (select boxid from boxs where staus=1 and dotid in(SELECT dotid FROM dot_server WHERE stid =" + stid + "))");
         Query query = entityManager.createNativeQuery(countSql.toString());
         Integer total = Integer.parseInt(query.getSingleResult().toString());
         return total;
@@ -189,6 +238,17 @@ public class ChargerRepositoryImpl implements ChargerRepository {
         countSql.append(" createtime>" + DateUtil.getStartDate(date));
         countSql.append(" and  createtime<" + DateUtil.getEndDate(date));
         countSql.append(" and boxid in (select boxid from boxs where staus=1 )");
+        Query query = entityManager.createNativeQuery(countSql.toString());
+        BigDecimal total = new BigDecimal(query.getSingleResult().toString());
+        return total;
+    }
+
+    @Override
+    public BigDecimal getRechargerAmountByDateAndStid(Date date, Long stid) {
+        StringBuffer countSql = new StringBuffer("SELECT SUM(sumpower) FROM charger_socket_usrrecord WHERE ");
+        countSql.append(" createtime>" + DateUtil.getStartDate(date));
+        countSql.append(" and  createtime<" + DateUtil.getEndDate(date));
+        countSql.append(" and boxid in (select boxid from boxs where staus=1 and dotid in(SELECT dotid FROM dot_server WHERE stid =" + stid + "))");
         Query query = entityManager.createNativeQuery(countSql.toString());
         BigDecimal total = new BigDecimal(query.getSingleResult().toString());
         return total;

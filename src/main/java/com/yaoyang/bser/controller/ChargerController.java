@@ -54,7 +54,11 @@ public class ChargerController {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
                 jsonObject.put("value", chargerRepository.getDeviceChildCountByDtidAndCityIdAndStid(SiteConstants.CHARGER_ID, cityServer.getCityID(), cityServer.getStid()));
             } else if (user.getLevel() == 1) {
-                jsonObject.put("value", chargerRepository.getDeviceChildCountByDtid(SiteConstants.CHARGER_ID));
+                if (user.getStid() != null) {
+                    jsonObject.put("value", chargerRepository.getDeviceChildCountByDtidAndStid(SiteConstants.CHARGER_ID, user.getStid()));
+                } else {
+                    jsonObject.put("value", chargerRepository.getDeviceChildCountByDtid(SiteConstants.CHARGER_ID));
+                }
             } else {
                 jsonObject.put("value", 0);
             }
@@ -78,7 +82,11 @@ public class ChargerController {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
                 jsonObject.put("value", chargerRepository.getRechargerCountByCityIdAndStidAndUsed(cityServer.getCityID(), cityServer.getStid()));
             } else if (user.getLevel() == 1) {
-                jsonObject.put("value", chargerRepository.getRechargerCountByUsed());
+                if (user.getStid() != null) {
+                    jsonObject.put("value", chargerRepository.getRechargerCountByUsedAndStid(user.getStid()));
+                } else {
+                    jsonObject.put("value", chargerRepository.getRechargerCountByUsed());
+                }
             } else {
                 jsonObject.put("value", 0);
             }
@@ -102,7 +110,11 @@ public class ChargerController {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
                 jsonObject.put("value", chargerRepository.getRechargerCountByCityIdAndStidAndRepair(cityServer.getCityID(), cityServer.getStid()));
             } else if (user.getLevel() == 1) {
-                jsonObject.put("value", chargerRepository.getRechargerCountByRepair());
+                if (user.getStid() != null) {
+                    jsonObject.put("value", chargerRepository.getRechargerCountByRepairAndStid(user.getStid()));
+                } else {
+                    jsonObject.put("value", chargerRepository.getRechargerCountByRepair());
+                }
             } else {
                 jsonObject.put("value", 0);
             }
@@ -128,8 +140,13 @@ public class ChargerController {
                 jsonObject.put("value", indexRepository.getDeviceCountByDtidAndCityIdAndStid(SiteConstants.CHARGER_ID, cityServer.getCityID(), cityServer.getStid()) -
                         chargerRepository.getRechargerCountByCityIdAndStidAndUsed(cityServer.getCityID(), cityServer.getStid()) - chargerRepository.getRechargerCountByCityIdAndStidAndRepair(cityServer.getCityID(), cityServer.getStid()));
             } else if (user.getLevel() == 1) {
-                jsonObject.put("value", indexRepository.getDeviceCountByDtid(SiteConstants.CHARGER_ID) -
-                        chargerRepository.getRechargerCountByUsed() - chargerRepository.getRechargerCountByRepair());
+                if (user.getStid() != null) {
+                    jsonObject.put("value", indexRepository.getDeviceCountByDtidAndStid(SiteConstants.CHARGER_ID, user.getStid()) -
+                            chargerRepository.getRechargerCountByUsedAndStid(user.getStid()) - chargerRepository.getRechargerCountByRepairAndStid(user.getStid()));
+                } else {
+                    jsonObject.put("value", indexRepository.getDeviceCountByDtid(SiteConstants.CHARGER_ID) -
+                            chargerRepository.getRechargerCountByUsed() - chargerRepository.getRechargerCountByRepair());
+                }
             } else {
                 jsonObject.put("value", 0);
             }
@@ -172,14 +189,25 @@ public class ChargerController {
                 jsonObject.put("今日用电度数", rechargerAmountToday);
                 jsonObject.put("今日费用", rechargerAmountToday.multiply(SiteConstants.ELECTRICITY_PRICE));
             } else if (user.getLevel() == 1) {
-                BigDecimal rechargerAmountYesterday = chargerRepository.getRechargerAmountByDate(new DateTime().minusDays(1).toDate());
-                BigDecimal rechargerAmountToday = chargerRepository.getRechargerAmountByDate(new Date());
-                jsonObject.put("使用频次", chargerRepository.getRechargerRrequency(false));
-                jsonObject.put("使用员工", chargerRepository.getRechargerRrequency(true));
-                jsonObject.put("昨日用电度数", rechargerAmountYesterday);
-                jsonObject.put("昨日费用", rechargerAmountYesterday.multiply(SiteConstants.ELECTRICITY_PRICE));
-                jsonObject.put("今日用电度数", rechargerAmountToday);
-                jsonObject.put("今日费用", rechargerAmountToday.multiply(SiteConstants.ELECTRICITY_PRICE));
+                if(user.getStid()!=null){
+                    BigDecimal rechargerAmountYesterday = chargerRepository.getRechargerAmountByDateAndStid(new DateTime().minusDays(1).toDate(),user.getStid());
+                    BigDecimal rechargerAmountToday = chargerRepository.getRechargerAmountByDateAndStid(new Date(),user.getStid());
+                    jsonObject.put("使用频次", chargerRepository.getRechargerRrequencyByStid(false,user.getStid()));
+                    jsonObject.put("使用员工", chargerRepository.getRechargerRrequencyByStid(true,user.getStid()));
+                    jsonObject.put("昨日用电度数", rechargerAmountYesterday);
+                    jsonObject.put("昨日费用", rechargerAmountYesterday.multiply(SiteConstants.ELECTRICITY_PRICE));
+                    jsonObject.put("今日用电度数", rechargerAmountToday);
+                    jsonObject.put("今日费用", rechargerAmountToday.multiply(SiteConstants.ELECTRICITY_PRICE));
+                }else {
+                    BigDecimal rechargerAmountYesterday = chargerRepository.getRechargerAmountByDate(new DateTime().minusDays(1).toDate());
+                    BigDecimal rechargerAmountToday = chargerRepository.getRechargerAmountByDate(new Date());
+                    jsonObject.put("使用频次", chargerRepository.getRechargerRrequency(false));
+                    jsonObject.put("使用员工", chargerRepository.getRechargerRrequency(true));
+                    jsonObject.put("昨日用电度数", rechargerAmountYesterday);
+                    jsonObject.put("昨日费用", rechargerAmountYesterday.multiply(SiteConstants.ELECTRICITY_PRICE));
+                    jsonObject.put("今日用电度数", rechargerAmountToday);
+                    jsonObject.put("今日费用", rechargerAmountToday.multiply(SiteConstants.ELECTRICITY_PRICE));
+                }
             } else {
                 jsonObject.put("使用频次", 0);
                 jsonObject.put("使用员工", 0);

@@ -31,6 +31,20 @@ public class IndexRepositoryImpl implements IndexRepository {
     }
 
     @Override
+    public Integer getDeviceCountByDtidAndStid(Long dtId, Long stid) {
+        StringBuffer countSql = new StringBuffer("select COUNT(*) from boxs where staus=1 ");
+        if (dtId != null) {
+            countSql.append("and dtid=" + dtId);
+        }
+        if (stid != null) {
+            countSql.append(" and dotid in(SELECT dotid FROM dot_server WHERE stid =" + stid + ")");
+        }
+        Query query = entityManager.createNativeQuery(countSql.toString());
+        Integer total = Integer.parseInt(query.getSingleResult().toString());
+        return total;
+    }
+
+    @Override
     public Integer getDeviceCountByDtidAndCityIdAndStid(Long dtId, Long cityId, Long stid) {
         StringBuffer countSql = new StringBuffer("select COUNT(*) from boxs WHERE staus = 1 and ");
         if (dtId != null) {

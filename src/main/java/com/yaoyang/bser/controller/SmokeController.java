@@ -51,7 +51,11 @@ public class SmokeController {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
                 jsonObject.put("value", somkeRepository.getSmokeTimeByCityIdAndStidAndDate(cityServer.getCityID(), cityServer.getStid(), DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date())));
             } else if (user.getLevel() == 1) {
-                jsonObject.put("value", somkeRepository.getSmokeTimeByDate(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date())));
+                if (user.getStid() != null) {
+                    jsonObject.put("value", somkeRepository.getSmokeTimeByDateAndStid(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), user.getStid()));
+                } else {
+                    jsonObject.put("value", somkeRepository.getSmokeTimeByDate(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date())));
+                }
             } else {
                 jsonObject.put("value", 0);
             }
@@ -75,7 +79,11 @@ public class SmokeController {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
                 jsonObject.put("value", somkeRepository.getSmokeTimeByCityIdAndStidAndDate(cityServer.getCityID(), cityServer.getStid(), DateUtil.getStartDate(new DateTime().minus(1l).toDate()), DateUtil.getEndDate(new DateTime().minus(1l).toDate())));
             } else if (user.getLevel() == 1) {
-                jsonObject.put("value", somkeRepository.getSmokeTimeByDate(DateUtil.getStartDate(new DateTime().minus(1l).toDate()), DateUtil.getEndDate(new DateTime().minus(1l).toDate())));
+                if (user.getStid() != null) {
+                    jsonObject.put("value", somkeRepository.getSmokeTimeByDateAndStid(DateUtil.getStartDate(new DateTime().minus(1l).toDate()), DateUtil.getEndDate(new DateTime().minus(1l).toDate()), user.getStid()));
+                } else {
+                    jsonObject.put("value", somkeRepository.getSmokeTimeByDate(DateUtil.getStartDate(new DateTime().minus(1l).toDate()), DateUtil.getEndDate(new DateTime().minus(1l).toDate())));
+                }
             } else {
                 jsonObject.put("value", 0);
             }
@@ -93,8 +101,8 @@ public class SmokeController {
         if (user == null) {
             jsonObject.put("value", 0);
         } else {
-            if (user.getLevel() == 1) {
-                jsonObject.put("value", somkeRepository.getSmokeCityCountByStid(1l));
+            if (user.getLevel() == 1 && user.getStid() != null) {
+                jsonObject.put("value", somkeRepository.getSmokeCityCountByStid(user.getStid()));
             } else {
                 jsonObject.put("value", 0);
             }
@@ -115,8 +123,8 @@ public class SmokeController {
             if (user.getLevel() == 2) {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
                 jsonObject.put("value", somkeRepository.getSmokeDotCountByStidAndCityID(cityServer.getStid(), cityServer.getCityID()));
-            } else if (user.getLevel() == 1) {
-                jsonObject.put("value", somkeRepository.getSmokeDotCountByStid(1l));
+            } else if (user.getLevel() == 1 && user.getStid() != null) {
+                jsonObject.put("value", somkeRepository.getSmokeDotCountByStid(user.getStid()));
             } else {
                 jsonObject.put("value", 0);
             }

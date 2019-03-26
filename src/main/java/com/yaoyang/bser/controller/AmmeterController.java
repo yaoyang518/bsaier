@@ -72,14 +72,25 @@ public class AmmeterController {
                 jsonObject.put("今日费用", rechargerAmountToday.multiply(SiteConstants.ELECTRICITY_PRICE));
                 jsonObject.put("今日过载报警次数", ammeterRepository.getOverLoadCountByCityIdAndStidAndDate(cityServer.getCityID(), cityServer.getStid(), DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date())));
             } else if (user.getLevel() == 1) {
-                BigDecimal rechargerAmountYesterday = ammeterRepository.getRechargerAmountByDate(DateUtil.getStartDate(new DateTime().minusDays(1).toDate()), DateUtil.getEndDate(new DateTime().minusDays(1).toDate()));
-                BigDecimal rechargerAmountToday = ammeterRepository.getRechargerAmountByDate(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()));
-                jsonObject.put("昨日用电度数", rechargerAmountYesterday);
-                jsonObject.put("昨日费用", rechargerAmountYesterday.multiply(SiteConstants.ELECTRICITY_PRICE));
-                jsonObject.put("昨日过载报警次数", ammeterRepository.getOverLoadCountByDate(DateUtil.getStartDate(new DateTime().minusDays(1).toDate()), DateUtil.getEndDate(new DateTime().minusDays(1).toDate())));
-                jsonObject.put("今日用电度数", rechargerAmountToday);
-                jsonObject.put("今日费用", rechargerAmountToday.multiply(SiteConstants.ELECTRICITY_PRICE));
-                jsonObject.put("今日过载报警次数", ammeterRepository.getOverLoadCountByDate(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date())));
+                if (user.getStid() != null) {
+                    BigDecimal rechargerAmountYesterday = ammeterRepository.getRechargerAmountByDateAndStid(DateUtil.getStartDate(new DateTime().minusDays(1).toDate()), DateUtil.getEndDate(new DateTime().minusDays(1).toDate()), user.getStid());
+                    BigDecimal rechargerAmountToday = ammeterRepository.getRechargerAmountByDateAndStid(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), user.getStid());
+                    jsonObject.put("昨日用电度数", rechargerAmountYesterday);
+                    jsonObject.put("昨日费用", rechargerAmountYesterday.multiply(SiteConstants.ELECTRICITY_PRICE));
+                    jsonObject.put("昨日过载报警次数", ammeterRepository.getOverLoadCountByDateAndStid(DateUtil.getStartDate(new DateTime().minusDays(1).toDate()), DateUtil.getEndDate(new DateTime().minusDays(1).toDate()), user.getStid()));
+                    jsonObject.put("今日用电度数", rechargerAmountToday);
+                    jsonObject.put("今日费用", rechargerAmountToday.multiply(SiteConstants.ELECTRICITY_PRICE));
+                    jsonObject.put("今日过载报警次数", ammeterRepository.getOverLoadCountByDateAndStid(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), user.getStid()));
+                } else {
+                    BigDecimal rechargerAmountYesterday = ammeterRepository.getRechargerAmountByDate(DateUtil.getStartDate(new DateTime().minusDays(1).toDate()), DateUtil.getEndDate(new DateTime().minusDays(1).toDate()));
+                    BigDecimal rechargerAmountToday = ammeterRepository.getRechargerAmountByDate(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()));
+                    jsonObject.put("昨日用电度数", rechargerAmountYesterday);
+                    jsonObject.put("昨日费用", rechargerAmountYesterday.multiply(SiteConstants.ELECTRICITY_PRICE));
+                    jsonObject.put("昨日过载报警次数", ammeterRepository.getOverLoadCountByDate(DateUtil.getStartDate(new DateTime().minusDays(1).toDate()), DateUtil.getEndDate(new DateTime().minusDays(1).toDate())));
+                    jsonObject.put("今日用电度数", rechargerAmountToday);
+                    jsonObject.put("今日费用", rechargerAmountToday.multiply(SiteConstants.ELECTRICITY_PRICE));
+                    jsonObject.put("今日过载报警次数", ammeterRepository.getOverLoadCountByDate(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date())));
+                }
             } else {
                 jsonObject.put("昨日用电度数", 0);
                 jsonObject.put("昨日费用", 0);
@@ -137,7 +148,11 @@ public class AmmeterController {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
                 jsonObject.put("value", ammeterRepository.getRechargerAmountByCityIdAndStidAndDateAndType(cityServer.getCityID(), cityServer.getStid(), DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type));
             } else if (user.getLevel() == 1) {
-                jsonObject.put("value", ammeterRepository.getRechargerAmountByDateAndType(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type));
+                if(user.getStid()!=null){
+                    jsonObject.put("value", ammeterRepository.getRechargerAmountByDateAndTypeAndStid(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type,user.getStid()));
+                }else{
+                    jsonObject.put("value", ammeterRepository.getRechargerAmountByDateAndType(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type));
+                }
             } else {
                 jsonObject.put("value", 0);
             }
@@ -190,7 +205,11 @@ public class AmmeterController {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
                 jsonObject.put("value", ammeterRepository.getRechargerAmountByCityIdAndStidAndDateAndType(cityServer.getCityID(), cityServer.getStid(), DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type).multiply(SiteConstants.ELECTRICITY_PRICE));
             } else if (user.getLevel() == 1) {
-                jsonObject.put("value", ammeterRepository.getRechargerAmountByDateAndType(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type).multiply(SiteConstants.ELECTRICITY_PRICE));
+                if(user.getStid()!=null){
+                    jsonObject.put("value", ammeterRepository.getRechargerAmountByDateAndTypeAndStid(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type,user.getStid()).multiply(SiteConstants.ELECTRICITY_PRICE));
+                }else {
+                    jsonObject.put("value", ammeterRepository.getRechargerAmountByDateAndType(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type).multiply(SiteConstants.ELECTRICITY_PRICE));
+                }
             } else {
                 jsonObject.put("value", 0);
             }
@@ -243,7 +262,11 @@ public class AmmeterController {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
                 jsonObject.put("value", ammeterRepository.getOverLoadCountByCityIdAndStidAndDateAndType(cityServer.getCityID(), cityServer.getStid(), DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type));
             } else if (user.getLevel() == 1) {
-                jsonObject.put("value", ammeterRepository.getOverLoadCountByDateAndType(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type));
+                if(user.getStid()!=null){
+                    jsonObject.put("value", ammeterRepository.getOverLoadCountByDateAndTypeAndStid(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type,user.getStid()));
+                }else {
+                    jsonObject.put("value", ammeterRepository.getOverLoadCountByDateAndType(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), type));
+                }
             } else {
                 jsonObject.put("value", 0);
             }

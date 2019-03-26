@@ -60,10 +60,17 @@ public class AirpowerController {
                 jsonObject.put("员工区域使用中", airpowerRepository.getAirpowerCountByTypeAndIsUsedAndCityIdAndStid(SiteConstants.EMPLOYEE_TYPE, 1, cityServer.getCityID(), cityServer.getStid()));
                 jsonObject.put("员工区域空闲中", airpowerRepository.getAirpowerCountByTypeAndIsUsedAndCityIdAndStid(SiteConstants.EMPLOYEE_TYPE, 0, cityServer.getCityID(), cityServer.getStid()));
             } else if (user.getLevel() == 1) {
-                jsonObject.put("经理区域使用中", airpowerRepository.getAirpowerCountByTypeAndIsUsed(SiteConstants.MANAGER_TYPE, 1));
-                jsonObject.put("经理区域空闲中", airpowerRepository.getAirpowerCountByTypeAndIsUsed(SiteConstants.MANAGER_TYPE, 0));
-                jsonObject.put("员工区域使用中", airpowerRepository.getAirpowerCountByTypeAndIsUsed(SiteConstants.EMPLOYEE_TYPE, 1));
-                jsonObject.put("员工区域空闲中", airpowerRepository.getAirpowerCountByTypeAndIsUsed(SiteConstants.EMPLOYEE_TYPE, 0));
+                if (user.getStid() != null) {
+                    jsonObject.put("经理区域使用中", airpowerRepository.getAirpowerCountByTypeAndIsUsedAndStid(SiteConstants.MANAGER_TYPE, 1, user.getStid()));
+                    jsonObject.put("经理区域空闲中", airpowerRepository.getAirpowerCountByTypeAndIsUsedAndStid(SiteConstants.MANAGER_TYPE, 0, user.getStid()));
+                    jsonObject.put("员工区域使用中", airpowerRepository.getAirpowerCountByTypeAndIsUsedAndStid(SiteConstants.EMPLOYEE_TYPE, 1, user.getStid()));
+                    jsonObject.put("员工区域空闲中", airpowerRepository.getAirpowerCountByTypeAndIsUsedAndStid(SiteConstants.EMPLOYEE_TYPE, 0, user.getStid()));
+                } else {
+                    jsonObject.put("经理区域使用中", airpowerRepository.getAirpowerCountByTypeAndIsUsed(SiteConstants.MANAGER_TYPE, 1));
+                    jsonObject.put("经理区域空闲中", airpowerRepository.getAirpowerCountByTypeAndIsUsed(SiteConstants.MANAGER_TYPE, 0));
+                    jsonObject.put("员工区域使用中", airpowerRepository.getAirpowerCountByTypeAndIsUsed(SiteConstants.EMPLOYEE_TYPE, 1));
+                    jsonObject.put("员工区域空闲中", airpowerRepository.getAirpowerCountByTypeAndIsUsed(SiteConstants.EMPLOYEE_TYPE, 0));
+                }
             } else {
                 jsonObject.put("经理区域使用中", 0);
                 jsonObject.put("经理区域空闲中", 0);
@@ -100,7 +107,11 @@ public class AirpowerController {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
                 jsonObject.put("value", airpowerRepository.getRechargerAmountByTypeAndCityIdAndStid(type, cityServer.getCityID(), cityServer.getStid()));
             } else if (user.getLevel() == 1) {
-                jsonObject.put("value", airpowerRepository.getRechargerAmountByType(type));
+                if (user.getStid() != null) {
+                    jsonObject.put("value", airpowerRepository.getRechargerAmountByTypeAndStid(type, user.getStid()));
+                } else {
+                    jsonObject.put("value", airpowerRepository.getRechargerAmountByType(type));
+                }
             } else {
                 jsonObject.put("value", 0);
             }
@@ -134,7 +145,11 @@ public class AirpowerController {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
                 jsonObject.put("value", airpowerRepository.getRechargerAmountByTypeAndCityIdAndStid(type, cityServer.getCityID(), cityServer.getStid()).multiply(SiteConstants.ELECTRICITY_PRICE));
             } else if (user.getLevel() == 1) {
-                jsonObject.put("value", airpowerRepository.getRechargerAmountByType(type).multiply(SiteConstants.ELECTRICITY_PRICE));
+                if (user.getStid() != null) {
+                    jsonObject.put("value", airpowerRepository.getRechargerAmountByTypeAndStid(type, user.getStid()).multiply(SiteConstants.ELECTRICITY_PRICE));
+                } else {
+                    jsonObject.put("value", airpowerRepository.getRechargerAmountByType(type).multiply(SiteConstants.ELECTRICITY_PRICE));
+                }
             } else {
                 jsonObject.put("value", 0);
             }
@@ -168,7 +183,11 @@ public class AirpowerController {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
                 jsonObject.put("value", airpowerRepository.getAirTimeCountByTypeAndCityIdAndStid(type, cityServer.getCityID(), cityServer.getStid()));
             } else if (user.getLevel() == 1) {
-                jsonObject.put("value", airpowerRepository.getAirTimeCountByType(type));
+                if (user.getStid() != null) {
+                    jsonObject.put("value", airpowerRepository.getAirTimeCountByTypeAndStid(type, user.getStid()));
+                } else {
+                    jsonObject.put("value", airpowerRepository.getAirTimeCountByType(type));
+                }
             } else {
                 jsonObject.put("value", 0);
             }
