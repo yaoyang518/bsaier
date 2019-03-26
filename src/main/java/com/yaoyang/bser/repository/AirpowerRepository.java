@@ -28,23 +28,23 @@ public interface AirpowerRepository extends JpaRepository<CityServer, Long> {
     Integer getAirpowerCountByTypeAndIsUsedAndDotId(@Param("type") Integer type, @Param("isUsed") Integer isUsed, @Param("dotid") Long dotid);
 
     //度数---
-    @Query(value = "SELECT SUM(sumpower) FROM airpower_daliy WHERE boxid in(SELECT boxid FROM boxes_child WHERE number=1 and childname=:type and boxid in(select boxid from boxs where staus=1 and dtid=2))", nativeQuery = true)
+    @Query(value = "SELECT SUM(sumpower) FROM airpower_daliy WHERE iccid in(SELECT ICCID FROM boxes_child WHERE number=1 and childname=:type and boxid in(select boxid from boxs where staus=1 and dtid=2))", nativeQuery = true)
     BigDecimal getRechargerAmountByType(@Param("type") Integer type);
 
-    @Query(value = "SELECT SUM(sumpower) FROM airpower_daliy WHERE boxid in(SELECT boxid FROM boxes_child WHERE number=1 and childname=:type and boxid in(select boxid from boxs where staus=1 and dtid=2 and dotid in(SELECT dotid FROM dot_server WHERE districtID in(SELECT districtID FROM sys_destrict WHERE cityID=:cityId) and stid =:stid) ))", nativeQuery = true)
+    @Query(value = "SELECT SUM(sumpower) FROM airpower_daliy WHERE iccid in(SELECT ICCID FROM boxes_child WHERE number=1 and childname=:type and boxid in(select boxid from boxs where staus=1 and dtid=2 and dotid in(SELECT dotid FROM dot_server WHERE districtID in(SELECT districtID FROM sys_destrict WHERE cityID=:cityId) and stid =:stid) ))", nativeQuery = true)
     BigDecimal getRechargerAmountByTypeAndCityIdAndStid(@Param("type") Integer type, @Param("cityId") Long cityId, @Param("stid") Long stid);
 
-    @Query(value = "SELECT SUM(sumpower) FROM airpower_daliy WHERE boxid in(SELECT boxid FROM boxes_child WHERE number=1 and childname=:type and boxid in(select boxid from boxs where staus=1 and dotid=:dotid and dtid=2))", nativeQuery = true)
+    @Query(value = "SELECT SUM(sumpower) FROM airpower_daliy WHERE iccid in(SELECT ICCID FROM boxes_child WHERE number=1 and childname=:type and boxid in(select boxid from boxs where staus=1 and dotid=:dotid and dtid=2))", nativeQuery = true)
     BigDecimal getRechargerAmountByTypeAndDotId(@Param("type") Integer type, @Param("dotid") Long dotid);
 
     //控制数---
-    @Query(value = "SELECT SUM(air_time) FROM airpower_daliy WHERE boxid in(SELECT boxid FROM boxes_child WHERE number=1 and childname=:type and boxid in(select boxid from boxs where staus=1 and dtid=2))", nativeQuery = true)
+    @Query(value = "SELECT SUM(air_time) FROM airpower_daliy WHERE iccid in(SELECT ICCID FROM boxes_child WHERE number=1 and childname=:type and boxid in(select boxid from boxs where staus=1 and dtid=2))", nativeQuery = true)
     Integer getAirTimeCountByType(@Param("type") Integer type);
 
-    @Query(value = "SELECT SUM(air_time) FROM airpower_daliy WHERE boxid in(SELECT boxid FROM boxes_child WHERE number=1 and childname=:type and boxid in(select boxid from boxs where staus=1 and dtid=2 and dotid in(SELECT dotid FROM dot_server WHERE districtID in(SELECT districtID FROM sys_destrict WHERE cityID=:cityId) and stid =:stid) ))", nativeQuery = true)
+    @Query(value = "SELECT SUM(air_time) FROM airpower_daliy WHERE iccid in(SELECT ICCID FROM boxes_child WHERE number=1 and childname=:type and boxid in(select boxid from boxs where staus=1 and dtid=2 and dotid in(SELECT dotid FROM dot_server WHERE districtID in(SELECT districtID FROM sys_destrict WHERE cityID=:cityId) and stid =:stid) ))", nativeQuery = true)
     Integer getAirTimeCountByTypeAndCityIdAndStid(@Param("type") Integer type, @Param("cityId") Long cityId, @Param("stid") Long stid);
 
-    @Query(value = "SELECT SUM(air_time) FROM airpower_daliy WHERE boxid in(SELECT boxid FROM boxes_child WHERE number=1 and childname=:type and boxid in(select boxid from boxs where staus=1 and dotid=:dotid and dtid=2))", nativeQuery = true)
+    @Query(value = "SELECT SUM(air_time) FROM airpower_daliy WHERE iccid in(SELECT ICCID FROM boxes_child WHERE number=1 and childname=:type and boxid in(select boxid from boxs where staus=1 and dotid=:dotid and dtid=2))", nativeQuery = true)
     Integer getAirTimeCountByTypeAndDotId(@Param("type") Integer type, @Param("dotid") Long dotid);
 
 }
