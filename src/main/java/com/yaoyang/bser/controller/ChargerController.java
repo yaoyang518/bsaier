@@ -5,6 +5,7 @@ import com.yaoyang.bser.constants.SiteConstants;
 import com.yaoyang.bser.entity.CityServer;
 import com.yaoyang.bser.entity.User;
 import com.yaoyang.bser.repository.ChargerRepository;
+import com.yaoyang.bser.repository.ChargerSortRepository;
 import com.yaoyang.bser.repository.CityServerRepository;
 import com.yaoyang.bser.repository.IndexRepository;
 import com.yaoyang.bser.service.UserService;
@@ -36,6 +37,8 @@ public class ChargerController {
     private CityServerRepository cityServerRepository;
     @Autowired
     private ChargerRepository chargerRepository;
+    @Autowired
+    private ChargerSortRepository chargerSortRepository;
     @Autowired
     private UserService userService;
 
@@ -189,16 +192,16 @@ public class ChargerController {
                 jsonObject.put("今日用电度数", rechargerAmountToday);
                 jsonObject.put("今日费用", rechargerAmountToday.multiply(SiteConstants.ELECTRICITY_PRICE));
             } else if (user.getLevel() == 1) {
-                if(user.getStid()!=null){
-                    BigDecimal rechargerAmountYesterday = chargerRepository.getRechargerAmountByDateAndStid(new DateTime().minusDays(1).toDate(),user.getStid());
-                    BigDecimal rechargerAmountToday = chargerRepository.getRechargerAmountByDateAndStid(new Date(),user.getStid());
-                    jsonObject.put("使用频次", chargerRepository.getRechargerRrequencyByStid(false,user.getStid()));
-                    jsonObject.put("使用员工", chargerRepository.getRechargerRrequencyByStid(true,user.getStid()));
+                if (user.getStid() != null) {
+                    BigDecimal rechargerAmountYesterday = chargerRepository.getRechargerAmountByDateAndStid(new DateTime().minusDays(1).toDate(), user.getStid());
+                    BigDecimal rechargerAmountToday = chargerRepository.getRechargerAmountByDateAndStid(new Date(), user.getStid());
+                    jsonObject.put("使用频次", chargerRepository.getRechargerRrequencyByStid(false, user.getStid()));
+                    jsonObject.put("使用员工", chargerRepository.getRechargerRrequencyByStid(true, user.getStid()));
                     jsonObject.put("昨日用电度数", rechargerAmountYesterday);
                     jsonObject.put("昨日费用", rechargerAmountYesterday.multiply(SiteConstants.ELECTRICITY_PRICE));
                     jsonObject.put("今日用电度数", rechargerAmountToday);
                     jsonObject.put("今日费用", rechargerAmountToday.multiply(SiteConstants.ELECTRICITY_PRICE));
-                }else {
+                } else {
                     BigDecimal rechargerAmountYesterday = chargerRepository.getRechargerAmountByDate(new DateTime().minusDays(1).toDate());
                     BigDecimal rechargerAmountToday = chargerRepository.getRechargerAmountByDate(new Date());
                     jsonObject.put("使用频次", chargerRepository.getRechargerRrequency(false));
@@ -215,6 +218,153 @@ public class ChargerController {
                 jsonObject.put("昨日费用", 0);
                 jsonObject.put("今日用电度数", 0);
                 jsonObject.put("今日费用", 0);
+            }
+        }
+        jsonArray.add(jsonObject);
+        return jsonArray;
+    }
+
+    @GetMapping("/getRechargerCitySort")
+    @ApiOperation(value = "报修城市排行榜-前端")
+    public JSONArray getRechargerCitySort(HttpServletRequest request) {
+        User user = userService.checkUser(request);
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        if (user == null) {
+            jsonObject.put("x", 0);
+            jsonObject.put("y", 0);
+        } else {
+            if (user.getLevel() == 1) {
+                if (user.getStid() != null) {
+                    return chargerSortRepository.getRechargerCitySortByStid(user.getStid());
+                }
+            } else {
+                jsonObject.put("x", 0);
+                jsonObject.put("y", 0);
+            }
+        }
+        jsonArray.add(jsonObject);
+        return jsonArray;
+    }
+
+    @GetMapping("/getRechargerDotSort")
+    @ApiOperation(value = "报修网点排行榜-前端")
+    public JSONArray getRechargerDotSort(HttpServletRequest request) {
+        User user = userService.checkUser(request);
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        if (user == null) {
+            jsonObject.put("x", 0);
+            jsonObject.put("y", 0);
+        } else {
+            if (user.getLevel() == 2) {
+                CityServer cityServer = cityServerRepository.findByCid(user.getCid());
+                return chargerSortRepository.getRechargerDotSortByStidAndCityID(cityServer.getStid(), cityServer.getCityID());
+            } else if (user.getLevel() == 1) {
+                if (user.getStid() != null) {
+                    return chargerSortRepository.getRechargerDotSortByStid(user.getStid());
+                }
+            } else {
+                jsonObject.put("x", 0);
+                jsonObject.put("y", 0);
+            }
+        }
+        jsonArray.add(jsonObject);
+        return jsonArray;
+    }
+
+    @GetMapping("/getRechargerCitySortByUsed")
+    @ApiOperation(value = "使用城市排行榜-前端")
+    public JSONArray getRechargerCitySortByUsed(HttpServletRequest request) {
+        User user = userService.checkUser(request);
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        if (user == null) {
+            jsonObject.put("x", 0);
+            jsonObject.put("y", 0);
+        } else {
+            if (user.getLevel() == 1) {
+                if (user.getStid() != null) {
+                    return chargerSortRepository.getRechargerCitySortByStidAndUsed(user.getStid());
+                }
+            } else {
+                jsonObject.put("x", 0);
+                jsonObject.put("y", 0);
+            }
+        }
+        jsonArray.add(jsonObject);
+        return jsonArray;
+    }
+
+    @GetMapping("/getRechargerDotSortByUsed")
+    @ApiOperation(value = "使用网点排行榜-前端")
+    public JSONArray getRechargerDotSortByUsed(HttpServletRequest request) {
+        User user = userService.checkUser(request);
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        if (user == null) {
+            jsonObject.put("x", 0);
+            jsonObject.put("y", 0);
+        } else {
+            if (user.getLevel() == 2) {
+                CityServer cityServer = cityServerRepository.findByCid(user.getCid());
+                return chargerSortRepository.getRechargerDotSortByStidAndCityIDAndUsed(cityServer.getStid(), cityServer.getCityID());
+            } else if (user.getLevel() == 1) {
+                if (user.getStid() != null) {
+                    return chargerSortRepository.getRechargerDotSortByStidAndUsed(user.getStid());
+                }
+            } else {
+                jsonObject.put("x", 0);
+                jsonObject.put("y", 0);
+            }
+        }
+        jsonArray.add(jsonObject);
+        return jsonArray;
+    }
+
+    @GetMapping("/getRechargerCitySortUnused")
+    @ApiOperation(value = "空闲城市排行榜-前端")
+    public JSONArray getRechargerCitySortUnused(HttpServletRequest request) {
+        User user = userService.checkUser(request);
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        if (user == null) {
+            jsonObject.put("x", 0);
+            jsonObject.put("y", 0);
+        } else {
+            if (user.getLevel() == 1) {
+                if (user.getStid() != null) {
+                    return chargerSortRepository.getRechargerCitySortByStidAndUnused(user.getStid());
+                }
+            } else {
+                jsonObject.put("x", 0);
+                jsonObject.put("y", 0);
+            }
+        }
+        jsonArray.add(jsonObject);
+        return jsonArray;
+    }
+
+    @GetMapping("/getRechargerDotSortUnused")
+    @ApiOperation(value = "空闲网点排行榜-前端")
+    public JSONArray getRechargerDotSortUnused(HttpServletRequest request) {
+        User user = userService.checkUser(request);
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        if (user == null) {
+            jsonObject.put("x", 0);
+            jsonObject.put("y", 0);
+        } else {
+            if (user.getLevel() == 2) {
+                CityServer cityServer = cityServerRepository.findByCid(user.getCid());
+                return chargerSortRepository.getRechargerDotSortByStidAndCityIDAndUnused(cityServer.getStid(), cityServer.getCityID());
+            } else if (user.getLevel() == 1) {
+                if (user.getStid() != null) {
+                    return chargerSortRepository.getRechargerDotSortByStidAndUnused(user.getStid());
+                }
+            } else {
+                jsonObject.put("x", 0);
+                jsonObject.put("y", 0);
             }
         }
         jsonArray.add(jsonObject);

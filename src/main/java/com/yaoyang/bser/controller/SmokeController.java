@@ -6,6 +6,7 @@ import com.yaoyang.bser.entity.User;
 import com.yaoyang.bser.repository.CityServerRepository;
 import com.yaoyang.bser.repository.IndexRepository;
 import com.yaoyang.bser.repository.SomkeRepository;
+import com.yaoyang.bser.repository.SomkeSortRepository;
 import com.yaoyang.bser.service.UserService;
 import com.yaoyang.bser.util.DateUtil;
 import io.swagger.annotations.ApiOperation;
@@ -31,6 +32,8 @@ import java.util.Date;
 public class SmokeController {
     @Autowired
     private SomkeRepository somkeRepository;
+    @Autowired
+    private SomkeSortRepository somkeSortRepository;
     @Autowired
     private CityServerRepository cityServerRepository;
     @Autowired
@@ -132,5 +135,55 @@ public class SmokeController {
         jsonArray.add(jsonObject);
         return jsonArray;
     }
+
+    @GetMapping("/getSomkeTimeCitySort")
+    @ApiOperation(value = "城市排行榜-前端")
+    public JSONArray getSomkeTimeCitySort(HttpServletRequest request) {
+        User user = userService.checkUser(request);
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        if (user == null) {
+            jsonObject.put("x", 0);
+            jsonObject.put("y", 0);
+        } else {
+            if (user.getLevel() == 1) {
+                if (user.getStid() != null) {
+                    return somkeSortRepository.getSomkeTimeCitySortByStid(user.getStid());
+                }
+            } else {
+                jsonObject.put("x", 0);
+                jsonObject.put("y", 0);
+            }
+        }
+        jsonArray.add(jsonObject);
+        return jsonArray;
+    }
+
+    @GetMapping("/getSomkeTimeDotSort")
+    @ApiOperation(value = "网点排行榜-前端")
+    public JSONArray getSomkeTimeDotSort(HttpServletRequest request) {
+        User user = userService.checkUser(request);
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        if (user == null) {
+            jsonObject.put("x", 0);
+            jsonObject.put("y", 0);
+        } else {
+            if (user.getLevel() == 2) {
+                CityServer cityServer = cityServerRepository.findByCid(user.getCid());
+                return somkeSortRepository.getSomkeTimeDotSortByStidAndCityID(cityServer.getStid(), cityServer.getCityID());
+            } else if (user.getLevel() == 1) {
+                if (user.getStid() != null) {
+                    return somkeSortRepository.getSomkeTimeDotSortByStid(user.getStid());
+                }
+            } else {
+                jsonObject.put("x", 0);
+                jsonObject.put("y", 0);
+            }
+        }
+        jsonArray.add(jsonObject);
+        return jsonArray;
+    }
+
 
 }

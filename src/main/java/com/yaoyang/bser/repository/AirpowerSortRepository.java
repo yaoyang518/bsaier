@@ -21,10 +21,15 @@ public interface AirpowerSortRepository extends JpaRepository<CityServer, Long> 
     //城市排行榜
     @Query(value = "SELECT ds.dotname as x,SUM(ad.air_time) as y from airpower_daliy ad,boxs bs,dot_server ds,sys_destrict sd,sys_city sc \n" +
             "WHERE ad.ICCID = bs.ICCID and bs.dotid=ds.dotid and sd.districtID =ds.districtID and sc.cityID=sd.cityID and ds.stid=:stid GROUP BY sc.cityID ORDER BY y DESC", nativeQuery = true)
-    public JSONArray getSomkeTimeCitySortByStidAndUsed(@Param("stid") Long stid);
+    public JSONArray getAirTimeCitySortByStid(@Param("stid") Long stid);
+
+    //使用网点排行榜
+    @Query(value = "SELECT ds.dotname as x,SUM(ad.air_time) as y from airpower_daliy ad,boxs bs,dot_server ds " +
+            "WHERE ad.ICCID = bs.ICCID and bs.dotid=ds.dotid  and  ds.stid=:stid  GROUP BY ds.dotid ORDER BY y DESC", nativeQuery = true)
+    public JSONArray getAirTimeDotSortByStid(@Param("stid") Long stid);
 
     //使用网点排行榜
     @Query(value = "SELECT ds.dotname as x,SUM(ad.air_time) as y from airpower_daliy ad,boxs bs,dot_server ds,sys_destrict sd " +
             "WHERE ad.ICCID = bs.ICCID and bs.dotid=ds.dotid and sd.districtID =ds.districtID and  ds.stid=:stid and sd.cityID=:cityId GROUP BY ds.dotid ORDER BY y DESC", nativeQuery = true)
-    public JSONArray getSomkeTimeDotSortByStidAndCityIDAndUsed(@Param("stid") Long stid, @Param("cityId") Long cityId);
+    public JSONArray getAirTimeDotSortByStidAndCityID(@Param("stid") Long stid, @Param("cityId") Long cityId);
 }

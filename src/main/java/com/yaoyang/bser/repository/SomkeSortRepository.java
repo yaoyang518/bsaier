@@ -21,10 +21,15 @@ public interface SomkeSortRepository extends JpaRepository<CityServer, Long> {
     //城市排行榜
     @Query(value = "SELECT sc.cityName as x,SUM(sm.smoke_time) as y from smoke_daily sm,boxs bs,dot_server ds,sys_destrict sd,sys_city sc " +
             "WHERE sm.ICCID = bs.ICCID and bs.dotid=ds.dotid and sd.districtID =ds.districtID and sc.cityID=sd.cityID and ds.stid=:stid GROUP BY sc.cityID ORDER BY y DESC", nativeQuery = true)
-    public JSONArray getSomkeTimeCitySortByStidAndUsed(@Param("stid") Long stid);
+    public JSONArray getSomkeTimeCitySortByStid(@Param("stid") Long stid);
 
     //使用网点排行榜
-    @Query(value = "SELECT ds.dotname as x,SUM(sm.smoke_time) as y from smoke_daily sm,boxs bs,dot_server ds,sys_destrict sd\n" +
+    @Query(value = "SELECT ds.dotname as x,SUM(sm.smoke_time) as y from smoke_daily sm,boxs bs,dot_server ds\n" +
+            "WHERE sm.ICCID = bs.ICCID and bs.dotid=ds.dotid  and  ds.stid=:stid GROUP BY ds.dotid ORDER BY y DESC", nativeQuery = true)
+    public JSONArray getSomkeTimeDotSortByStid(@Param("stid") Long stid);
+
+    //使用网点排行榜
+    @Query(value = "SELECT ds.dotname as x,SUM(sm.smoke_time) as y from smoke_daily sm,boxs bs,dot_server ds,sys_destrict sd " +
             "WHERE sm.ICCID = bs.ICCID and bs.dotid=ds.dotid and sd.districtID =ds.districtID and  ds.stid=:stid and sd.cityID=:cityId GROUP BY ds.dotid ORDER BY y DESC", nativeQuery = true)
-    public JSONArray getSomkeTimeDotSortByStidAndCityIDAndUsed(@Param("stid") Long stid, @Param("cityId") Long cityId);
+    public JSONArray getSomkeTimeDotSortByStidAndCityID(@Param("stid") Long stid, @Param("cityId") Long cityId);
 }

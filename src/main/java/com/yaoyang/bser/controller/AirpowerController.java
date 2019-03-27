@@ -5,6 +5,7 @@ import com.yaoyang.bser.constants.SiteConstants;
 import com.yaoyang.bser.entity.CityServer;
 import com.yaoyang.bser.entity.User;
 import com.yaoyang.bser.repository.AirpowerRepository;
+import com.yaoyang.bser.repository.AirpowerSortRepository;
 import com.yaoyang.bser.repository.CityServerRepository;
 import com.yaoyang.bser.repository.IndexRepository;
 import com.yaoyang.bser.service.UserService;
@@ -31,6 +32,8 @@ import java.util.Date;
 public class AirpowerController {
     @Autowired
     private AirpowerRepository airpowerRepository;
+    @Autowired
+    private AirpowerSortRepository airpowerSortRepository;
     @Autowired
     private CityServerRepository cityServerRepository;
     @Autowired
@@ -195,5 +198,55 @@ public class AirpowerController {
         jsonArray.add(jsonObject);
         return jsonArray;
     }
+
+    @GetMapping("/getAirTimeCitySort")
+    @ApiOperation(value = "城市排行榜-前端")
+    public JSONArray getAirTimeCitySort(HttpServletRequest request) {
+        User user = userService.checkUser(request);
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        if (user == null) {
+            jsonObject.put("x", 0);
+            jsonObject.put("y", 0);
+        } else {
+            if (user.getLevel() == 1) {
+                if (user.getStid() != null) {
+                    return airpowerSortRepository.getAirTimeCitySortByStid(user.getStid());
+                }
+            } else {
+                jsonObject.put("x", 0);
+                jsonObject.put("y", 0);
+            }
+        }
+        jsonArray.add(jsonObject);
+        return jsonArray;
+    }
+
+    @GetMapping("/getAirTimeDotSort")
+    @ApiOperation(value = "网点排行榜-前端")
+    public JSONArray getAirTimeDotSort(HttpServletRequest request) {
+        User user = userService.checkUser(request);
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        if (user == null) {
+            jsonObject.put("x", 0);
+            jsonObject.put("y", 0);
+        } else {
+            if (user.getLevel() == 2) {
+                CityServer cityServer = cityServerRepository.findByCid(user.getCid());
+                return airpowerSortRepository.getAirTimeDotSortByStidAndCityID(cityServer.getStid(), cityServer.getCityID());
+            } else if (user.getLevel() == 1) {
+                if (user.getStid() != null) {
+                    return airpowerSortRepository.getAirTimeDotSortByStid(user.getStid());
+                }
+            } else {
+                jsonObject.put("x", 0);
+                jsonObject.put("y", 0);
+            }
+        }
+        jsonArray.add(jsonObject);
+        return jsonArray;
+    }
+
 
 }
