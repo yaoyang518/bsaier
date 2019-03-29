@@ -113,7 +113,7 @@ public interface AmmeterRepository extends JpaRepository<CityServer, Long> {
 
     //网点类型报警量排行
     @Query(value = "SELECT number as x,SUM(overload_time) as y FROM ammeter_everyline_dailypower WHERE `date`>=:start and  `date`<=:end and  " +
-            "iccid in(select ICCID from boxs where staus=1 and dotid=:dotid) GROUP BY y ORDER BY y", nativeQuery = true)
+            "iccid in(select ICCID from boxs where staus=1 and dotid=:dotid) GROUP BY x ORDER BY y", nativeQuery = true)
     JSONArray getTypeOverLoadSotrByDotIdAndDate(@Param("dotid") Long dotid, @Param("start") Date start, @Param("end") Date end);
 
 }

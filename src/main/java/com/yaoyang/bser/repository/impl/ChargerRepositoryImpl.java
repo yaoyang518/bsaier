@@ -72,6 +72,9 @@ public class ChargerRepositoryImpl implements ChargerRepository {
             countSql.append(" and dtid=" + dtId);
         }
         Query query = entityManager.createNativeQuery(countSql.toString());
+        if (query.getSingleResult() == null) {
+            return new Integer(0);
+        }
         Integer total = Integer.parseInt(query.getSingleResult().toString());
         return total;
     }
@@ -120,9 +123,9 @@ public class ChargerRepositoryImpl implements ChargerRepository {
     public Integer getRechargerCountByDotIdAndUsed(Long dotid) {
         StringBuffer countSql = new StringBuffer("select COUNT(*) from boxs where staus=1 and dotid= ");
         countSql.append(dotid);
-        countSql.append("and boxid in (SELECT DISTINCT (boxid) FROM boxes_child WHERE boxid in (SELECT boxid FROM boxs WHERE dtid=1");
+        countSql.append(" and boxid in (SELECT DISTINCT (boxid) FROM boxes_child WHERE boxid in (SELECT boxid FROM boxs WHERE dtid=");
         countSql.append(SiteConstants.CHARGER_ID);
-        countSql.append(" and is_use=1)");
+        countSql.append(") and is_use=1)");
         Query query = entityManager.createNativeQuery(countSql.toString());
         Integer total = Integer.parseInt(query.getSingleResult().toString());
         return total;
@@ -284,12 +287,16 @@ public class ChargerRepositoryImpl implements ChargerRepository {
     @Override
     public BigDecimal getRechargerAmountByDotIdAndDate(Long dotid, Date date) {
         StringBuffer countSql = new StringBuffer("SELECT SUM(sumpower) FROM charger_socket_usrrecord WHERE ");
-        countSql.append(" createtime>" + DateUtil.getStartDate(date));
-        countSql.append(" and  createtime<" + DateUtil.getEndDate(date));
+        countSql.append(" createtime> :start and  createtime< :end ");
         countSql.append(" and boxid in (select boxid from boxs where staus=1 and dotid=");
         countSql.append(dotid);
         countSql.append(")");
         Query query = entityManager.createNativeQuery(countSql.toString());
+        query.setParameter("start", DateUtil.getStartDate(date));
+        query.setParameter("end", DateUtil.getEndDate(date));
+        if (query.getSingleResult() == null) {
+            return new BigDecimal(0);
+        }
         BigDecimal total = new BigDecimal(query.getSingleResult().toString());
         return total;
     }

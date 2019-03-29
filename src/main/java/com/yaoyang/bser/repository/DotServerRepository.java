@@ -20,10 +20,10 @@ import java.util.List;
 @Repository
 public interface DotServerRepository extends JpaRepository<DotServer, Long>, JpaSpecificationExecutor<DotServer> {
 
-    @Query(value = "SELECT lat,lng,dotname AS info from dot_server where staus=1 and stid=:stid", nativeQuery = true)
+    @Query(value = "SELECT lat,lng,dotname AS info,'ok' as 'type' from dot_server where staus=1 and stid=:stid", nativeQuery = true)
     List<JSONObject> findDotByStid(@Param("stid") Long stid);
 
-    @Query(value = " SELECT * FROM dot_server  WHERE stid=:stid and districtID in(SELECT districtID FROM sys_destrict WHERE cityID=:cityId)", nativeQuery = true)
+    @Query(value = " SELECT lat,lng,dotname AS info,'ok' as 'type' FROM dot_server  WHERE stid=:stid and districtID in(SELECT districtID FROM sys_destrict WHERE cityID=:cityId)", nativeQuery = true)
     List<JSONObject> findDotByStidAndCityId(@Param("stid") Long stid, @Param("cityId") Long cityId);
 
 }

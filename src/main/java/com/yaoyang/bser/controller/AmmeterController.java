@@ -356,6 +356,7 @@ public class AmmeterController {
                 json5.put("x", "其他用电");
                 json5.put("y", ammeterRepository.getRechargerAmountByDotIdAndDateAndType(user.getDotid(), DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), 5));
                 jsonArray.add(json5);
+                return jsonArray;
             } else {
                 jsonObject.put("x", "全是零");
                 jsonObject.put("y", 0);

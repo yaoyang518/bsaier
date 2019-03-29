@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,16 +42,18 @@ public class MapController {
 
     @GetMapping("/findDotByStid")
     @ApiOperation(value = "通过服务商找网点-前端")
-    public List login(HttpServletRequest request) {
+    public List findDotByStid(HttpServletRequest request) {
         User user = userService.checkUser(request);
-        JSONArray jsonArray = new JSONArray();
+        List list = new ArrayList();
         JSONObject jsonObject = new JSONObject();
         if (user == null) {
             jsonObject.put("lat", 0);
             jsonObject.put("lng", 0);
+            jsonObject.put("type", "ok");
         } else {
             if (user.getLevel() == 2) {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
+                return dotServerRepository.findDotByStidAndCityId(cityServer.getStid(), cityServer.getCityID());
             } else if (user.getLevel() == 1) {
                 if (user.getStid() != null) {
                     return dotServerRepository.findDotByStid(user.getStid());
@@ -58,10 +61,31 @@ public class MapController {
             } else {
                 jsonObject.put("lat", 0);
                 jsonObject.put("lng", 0);
+                jsonObject.put("type", "ok");
             }
         }
-        jsonArray.add(jsonObject);
-        return jsonArray;
+        list.add(jsonObject);
+        return list;
+    }
+
+    @GetMapping("/findCityCode")
+    @ApiOperation(value = "查找城市code-前端")
+    public List findCityCode(HttpServletRequest request) {
+        User user = userService.checkUser(request);
+        List list = new ArrayList();
+        JSONObject jsonObject = new JSONObject();
+        if (user == null) {
+            jsonObject.put("adcode", 0);
+        } else {
+            if (user.getLevel() == 2) {
+                CityServer cityServer = cityServerRepository.findByCid(user.getCid());
+                jsonObject.put("adcode", cityServer.getCityID());
+            } else {
+                jsonObject.put("adcode", 0);
+            }
+        }
+        list.add(jsonObject);
+        return list;
     }
 
 }
