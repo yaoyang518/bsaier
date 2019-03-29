@@ -53,15 +53,22 @@ $(function() {
                     success : function(result) {
                         console.log(result);
                         if(result.success){
-                           $.AMUI.utils.cookie.set("realname", result.data.realname, 8 * 60 * 1000, "/");//存token
-                            location.href = "datav.html";
+                           $.AMUI.utils.cookie.set("userid", result.data.userid, 8 * 60 * 1000, "/");//存token
+                            if(result.data.level==1){
+                                location.href = "datavIndex.html";
+                            }else if(result.data.level==2){
+                                location.href = "datavCity.html";
+                            }else if(result.data.level==3){
+                                location.href = "datavDot.html";
+                            }else {
+                                alert("请检查您的输入！");
+                            }
                         } else {
                             if(result.code=='4002'){
                                 codeWarn(result.message);
                             } else if (result.code=='0011'){
                                 phoneErr(result.message);
                             }
-
                         }
                         hideLoading();
                     }

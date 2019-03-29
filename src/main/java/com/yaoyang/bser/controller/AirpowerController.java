@@ -143,15 +143,15 @@ public class AirpowerController {
             jsonObject.put("value", 0);
         } else {
             if (user.getLevel() == 3) {
-                jsonObject.put("value", airpowerRepository.getRechargerAmountByTypeAndDotId(type, user.getDotid()).multiply(SiteConstants.ELECTRICITY_PRICE));
+                jsonObject.put("value", airpowerRepository.getRechargerAmountByTypeAndDotId(type, user.getDotid()) == null ? 0 : airpowerRepository.getRechargerAmountByTypeAndDotId(type, user.getDotid()).multiply(SiteConstants.ELECTRICITY_PRICE));
             } else if (user.getLevel() == 2) {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
-                jsonObject.put("value", airpowerRepository.getRechargerAmountByTypeAndCityIdAndStid(type, cityServer.getCityID(), cityServer.getStid()).multiply(SiteConstants.ELECTRICITY_PRICE));
+                jsonObject.put("value", airpowerRepository.getRechargerAmountByTypeAndCityIdAndStid(type, cityServer.getCityID(), cityServer.getStid()) == null ? 0 : airpowerRepository.getRechargerAmountByTypeAndCityIdAndStid(type, cityServer.getCityID(), cityServer.getStid()).multiply(SiteConstants.ELECTRICITY_PRICE));
             } else if (user.getLevel() == 1) {
                 if (user.getStid() != null) {
-                    jsonObject.put("value", airpowerRepository.getRechargerAmountByTypeAndStid(type, user.getStid()).multiply(SiteConstants.ELECTRICITY_PRICE));
+                    jsonObject.put("value", airpowerRepository.getRechargerAmountByTypeAndStid(type, user.getStid()) == null ? 0 : airpowerRepository.getRechargerAmountByTypeAndStid(type, user.getStid()).multiply(SiteConstants.ELECTRICITY_PRICE));
                 } else {
-                    jsonObject.put("value", airpowerRepository.getRechargerAmountByType(type).multiply(SiteConstants.ELECTRICITY_PRICE));
+                    jsonObject.put("value", airpowerRepository.getRechargerAmountByType(type) == null ? 0 : airpowerRepository.getRechargerAmountByType(type).multiply(SiteConstants.ELECTRICITY_PRICE));
                 }
             } else {
                 jsonObject.put("value", 0);

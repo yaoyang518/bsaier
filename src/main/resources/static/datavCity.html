@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>数据</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link rel="alternate icon" type="image/png" href="assets/i/favicon.png">
+  <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
+  <link rel="stylesheet" href="site/lss.css"/>
+  <script src="site/jquery-3.2.1.min.js"></script>
+  <script src="assets/js/amazeui.js"></script>
+ <style>
+    .header {
+      text-align: center;
+    }
+    .header h1 {
+      font-size: 200%;
+      color: #333;
+      margin-top: 30px;
+    }
+    .header p {
+      font-size: 14px;
+    }
+   #iframe{
+     height:100%;
+     width:100%;
+   }
+  </style>
+</head>
+  <body>
+  <iframe src="http://datav.aliyuncs.com/share/c6bc5c5f6cdf93a67fe0b967bbbd965e"
+          allowfullscreen="true"
+          webkitallowfullscreen="true"
+          mozallowfullscreen="true" id="iframe"></iframe>
+  </body>
+  <script>
+    var height = window.screen.height;
+    $('body').css('height',height);
+    console.log(height);
+  </script>
+
+</html>

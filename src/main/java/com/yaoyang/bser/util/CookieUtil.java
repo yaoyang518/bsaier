@@ -31,6 +31,8 @@ public class CookieUtil {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 jsonObject.put(cookie.getName(), cookie.getValue());
+                System.out.println("cookie.getName():"+cookie.getName());
+                System.out.println("cookie.getValue():"+cookie.getValue());
             }
         }
         return jsonObject;

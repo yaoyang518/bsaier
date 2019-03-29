@@ -58,6 +58,9 @@ public class ChargerRepositoryImpl implements ChargerRepository {
         }
         countSql.append("dotid in(SELECT dotid FROM dot_server WHERE districtID in(SELECT districtID FROM sys_destrict WHERE cityID=" + cityId + ") and stid =" + stid + ") ");
         Query query = entityManager.createNativeQuery(countSql.toString());
+        if (query.getSingleResult() == null) {
+            return new Integer(0);
+        }
         Integer total = Integer.parseInt(query.getSingleResult().toString());
         return total;
     }
@@ -247,10 +250,14 @@ public class ChargerRepositoryImpl implements ChargerRepository {
     @Override
     public BigDecimal getRechargerAmountByDateAndStid(Date date, Long stid) {
         StringBuffer countSql = new StringBuffer("SELECT SUM(sumpower) FROM charger_socket_usrrecord WHERE ");
-        countSql.append(" createtime>" + DateUtil.getStartDate(date));
-        countSql.append(" and  createtime<" + DateUtil.getEndDate(date));
+        countSql.append(" createtime>:start and  createtime<:end");
         countSql.append(" and boxid in (select boxid from boxs where staus=1 and dotid in(SELECT dotid FROM dot_server WHERE stid =" + stid + "))");
         Query query = entityManager.createNativeQuery(countSql.toString());
+        query.setParameter("start", DateUtil.getStartDate(date));
+        query.setParameter("end", DateUtil.getEndDate(date));
+        if (query.getSingleResult() == null) {
+            return new BigDecimal(0);
+        }
         BigDecimal total = new BigDecimal(query.getSingleResult().toString());
         return total;
     }
@@ -258,14 +265,18 @@ public class ChargerRepositoryImpl implements ChargerRepository {
     @Override
     public BigDecimal getRechargerAmountByCityIdAndStidAndDate(Long cityId, Long stid, Date date) {
         StringBuffer countSql = new StringBuffer("SELECT SUM(sumpower) FROM charger_socket_usrrecord WHERE ");
-        countSql.append(" createtime>" + DateUtil.getStartDate(date));
-        countSql.append(" and  createtime<" + DateUtil.getEndDate(date));
+        countSql.append(" createtime> :start and  createtime< :end");
         countSql.append(" and boxid in (select boxid from boxs WHERE staus = 1 and dotid in(SELECT dotid FROM dot_server WHERE districtID in(SELECT districtID FROM sys_destrict WHERE cityID=");
         countSql.append(cityId);
         countSql.append(") and stid =");
         countSql.append(stid);
         countSql.append("))");
         Query query = entityManager.createNativeQuery(countSql.toString());
+        query.setParameter("start", DateUtil.getStartDate(date));
+        query.setParameter("end", DateUtil.getEndDate(date));
+        if (query.getSingleResult() == null) {
+            return new BigDecimal(0);
+        }
         BigDecimal total = new BigDecimal(query.getSingleResult().toString());
         return total;
     }

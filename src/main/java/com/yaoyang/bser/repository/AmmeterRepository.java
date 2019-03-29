@@ -106,5 +106,14 @@ public interface AmmeterRepository extends JpaRepository<CityServer, Long> {
             "WHERE (adp.`date` BETWEEN :start AND :end) and bs.iccid =adp.iccid and ds.dotid=bs.dotid  and ds.dotid=:dotid  group by date_format(adp.`date`, '%Y-%m') ORDER BY value desc", nativeQuery = true)
     JSONArray getDotServerMonthSortByDateAnddotId( @Param("start") Date start, @Param("end") Date end, @Param("dotid") Long dotid);
 
+    //网点类型用电排行
+    @Query(value = "SELECT number as x,SUM(electricity_consumption) as y FROM ammeter_everyline_dailypower " +
+            "WHERE  `date`>=:start and  `date`<=:end  and iccid in(select ICCID from boxs where staus=1 and dotid=:dotid) GROUP BY x ORDER BY y", nativeQuery = true)
+    JSONArray getTypeSortByDotIdAndDate(@Param("dotid") Long dotid, @Param("start") Date start, @Param("end") Date end);
+
+    //网点类型报警量排行
+    @Query(value = "SELECT number as x,SUM(overload_time) as y FROM ammeter_everyline_dailypower WHERE `date`>=:start and  `date`<=:end and  " +
+            "iccid in(select ICCID from boxs where staus=1 and dotid=:dotid) GROUP BY y ORDER BY y", nativeQuery = true)
+    JSONArray getTypeOverLoadSotrByDotIdAndDate(@Param("dotid") Long dotid, @Param("start") Date start, @Param("end") Date end);
 
 }

@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User checkUser(HttpServletRequest request) {
         JSONObject json = CookieUtil.cookieToJson(request);
-        Long userid = (Long) json.get("userid");
+        Long userid = json.getLong("userid");
         if (userid == null) {
             return null;
         }

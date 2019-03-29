@@ -39,7 +39,7 @@ public interface SomkeRepository extends JpaRepository<CityServer, Long> {
     @Query(value = "SELECT COUNT(dotid) from dot_server WHERE stid =:stid and dotid in(SELECT DISTINCT(dotid) FROM boxs WHERE iccid in (SELECT DISTINCT(ICCID) FROM smoke_daily WHERE smoke_time>0))", nativeQuery = true)
     Integer getSmokeDotCountByStid(@Param("stid") Long stid);
 
-    @Query(value = "SELECT * FROM (SELECT * from dot_server WHERE stid =:stid and dotid in(SELECT DISTINCT(dotid) FROM boxs WHERE iccid in (SELECT DISTINCT(ICCID) FROM smoke_daily WHERE smoke_time>0))) as dot JOIN (SELECT * FROM sys_destrict WHERE cityID =:cityId) as dis ON dot.districtID=dis.districtID", nativeQuery = true)
+    @Query(value = "SELECT COUNT(dotid) FROM (SELECT * from dot_server WHERE stid =:stid and dotid in(SELECT DISTINCT(dotid) FROM boxs WHERE iccid in (SELECT DISTINCT(ICCID) FROM smoke_daily WHERE smoke_time>0))) as dot JOIN (SELECT * FROM sys_destrict WHERE cityID =:cityId) as dis ON dot.districtID=dis.districtID", nativeQuery = true)
     Integer getSmokeDotCountByStidAndCityID(@Param("stid") Long stid, @Param("cityId") Long cityId);
 
 }
