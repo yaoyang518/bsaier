@@ -6,6 +6,7 @@ import com.yaoyang.bser.entity.CityServer;
 import com.yaoyang.bser.entity.User;
 import com.yaoyang.bser.repository.*;
 import com.yaoyang.bser.service.UserService;
+import com.yaoyang.bser.util.JSONArrayUtil;
 import io.swagger.annotations.ApiOperation;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -235,7 +236,7 @@ public class ChargerController {
         } else {
             if (user.getLevel() == 1) {
                 if (user.getStid() != null) {
-                    return chargerSortRepository.getRechargerCitySortByStid(user.getStid());
+                    return JSONArrayUtil.toJSONArray(chargerSortRepository.getRechargerCitySortByStid(user.getStid()));
                 }
             } else {
                 jsonObject.put("x", 0);
@@ -258,10 +259,10 @@ public class ChargerController {
         } else {
             if (user.getLevel() == 2) {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
-                return chargerSortRepository.getRechargerDotSortByStidAndCityID(cityServer.getStid(), cityServer.getCityID());
+                return JSONArrayUtil.toJSONArray(chargerSortRepository.getRechargerDotSortByStidAndCityID(cityServer.getStid(), cityServer.getCityID()));
             } else if (user.getLevel() == 1) {
                 if (user.getStid() != null) {
-                    return chargerSortRepository.getRechargerDotSortByStid(user.getStid());
+                    return JSONArrayUtil.toJSONArray(chargerSortRepository.getRechargerDotSortByStid(user.getStid()));
                 }
             } else {
                 jsonObject.put("x", 0);
@@ -284,7 +285,7 @@ public class ChargerController {
         } else {
             if (user.getLevel() == 1) {
                 if (user.getStid() != null) {
-                    return chargerSortRepository.getRechargerCitySortByStidAndUsed(user.getStid());
+                    return JSONArrayUtil.toJSONArray(chargerSortRepository.getRechargerCitySortByStidAndUsed(user.getStid()));
                 }
             } else {
                 jsonObject.put("x", 0);
@@ -307,10 +308,10 @@ public class ChargerController {
         } else {
             if (user.getLevel() == 2) {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
-                return chargerSortRepository.getRechargerDotSortByStidAndCityIDAndUsed(cityServer.getStid(), cityServer.getCityID());
+                return JSONArrayUtil.toJSONArray(chargerSortRepository.getRechargerDotSortByStidAndCityIDAndUsed(cityServer.getStid(), cityServer.getCityID()));
             } else if (user.getLevel() == 1) {
                 if (user.getStid() != null) {
-                    return chargerSortRepository.getRechargerDotSortByStidAndUsed(user.getStid());
+                    return JSONArrayUtil.toJSONArray(chargerSortRepository.getRechargerDotSortByStidAndUsed(user.getStid()));
                 }
             } else {
                 jsonObject.put("x", 0);
@@ -333,7 +334,7 @@ public class ChargerController {
         } else {
             if (user.getLevel() == 1) {
                 if (user.getStid() != null) {
-                    return chargerSortRepository.getRechargerCitySortByStidAndUnused(user.getStid());
+                    return JSONArrayUtil.toJSONArray(chargerSortRepository.getRechargerCitySortByStidAndUnused(user.getStid()));
                 }
             } else {
                 jsonObject.put("x", 0);
@@ -356,10 +357,10 @@ public class ChargerController {
         } else {
             if (user.getLevel() == 2) {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
-                return chargerSortRepository.getRechargerDotSortByStidAndCityIDAndUnused(cityServer.getStid(), cityServer.getCityID());
+                return JSONArrayUtil.toJSONArray(chargerSortRepository.getRechargerDotSortByStidAndCityIDAndUnused(cityServer.getStid(), cityServer.getCityID()));
             } else if (user.getLevel() == 1) {
                 if (user.getStid() != null) {
-                    return chargerSortRepository.getRechargerDotSortByStidAndUnused(user.getStid());
+                    return JSONArrayUtil.toJSONArray(chargerSortRepository.getRechargerDotSortByStidAndUnused(user.getStid()));
                 }
             } else {
                 jsonObject.put("x", 0);

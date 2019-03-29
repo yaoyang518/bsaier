@@ -35,8 +35,6 @@ public class UserController {
         if (user == null) {
             return ApiResultBuilder.buildFailedResult(ResponseCode.PASSWORD_ERROR, "账号或密码错误", null);
         }
-        HttpSession session = request.getSession();
-        session.setAttribute("usrid", user.getUserid());
         return ApiResultBuilder.buildSuccessResult(ResponseCode.OPT_SUCCESS, user);
     }
 

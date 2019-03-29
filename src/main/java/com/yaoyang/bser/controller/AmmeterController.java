@@ -9,6 +9,7 @@ import com.yaoyang.bser.repository.CityServerRepository;
 import com.yaoyang.bser.repository.IndexRepository;
 import com.yaoyang.bser.service.UserService;
 import com.yaoyang.bser.util.DateUtil;
+import com.yaoyang.bser.util.JSONArrayUtil;
 import io.swagger.annotations.ApiOperation;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -288,10 +289,10 @@ public class AmmeterController {
         } else {
             if (user.getLevel() == 2) {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
-                return ammeterRepository.getDotServerSortByStidAndDateAndCityId(cityServer.getStid(), DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), cityServer.getCityID());
+                return JSONArrayUtil.toJSONArray(ammeterRepository.getDotServerSortByStidAndDateAndCityId(cityServer.getStid(), DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), cityServer.getCityID()));
             } else if (user.getLevel() == 1) {
                 if (user.getStid() != null) {
-                    return ammeterRepository.getDotServerSortByStidAndDate(user.getStid(), DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()));
+                    return JSONArrayUtil.toJSONArray(ammeterRepository.getDotServerSortByStidAndDate(user.getStid(), DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date())));
                 }
             } else {
                 jsonObject.put("x", 0);
@@ -313,7 +314,7 @@ public class AmmeterController {
             jsonObject.put("y", 0);
         } else {
             if (user.getLevel() == 3) {
-                return ammeterRepository.getDotServerMonthSortByDateAnddotId(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), user.getDotid());
+                return JSONArrayUtil.toJSONArray(ammeterRepository.getDotServerMonthSortByDateAnddotId(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), user.getDotid()));
             } else {
                 jsonObject.put("x", 0);
                 jsonObject.put("y", 0);
@@ -416,7 +417,7 @@ public class AmmeterController {
             jsonObject.put("y", 0);
         } else {
             if (user.getLevel() == 3) {
-                return ammeterRepository.getTypeSortByDotIdAndDate(user.getDotid(), DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()));
+                return JSONArrayUtil.toJSONArray(ammeterRepository.getTypeSortByDotIdAndDate(user.getDotid(), DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date())));
             } else {
                 jsonObject.put("x", 0);
                 jsonObject.put("y", 0);
@@ -438,7 +439,7 @@ public class AmmeterController {
             jsonObject.put("y", 0);
         } else {
             if (user.getLevel() == 3) {
-                return ammeterRepository.getTypeOverLoadSotrByDotIdAndDate(user.getDotid(), DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()));
+                return JSONArrayUtil.toJSONArray(ammeterRepository.getTypeOverLoadSotrByDotIdAndDate(user.getDotid(), DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date())));
             } else {
                 jsonObject.put("x", 0);
                 jsonObject.put("y", 0);

@@ -2,6 +2,7 @@ package com.yaoyang.bser.repository;
 
 import com.yaoyang.bser.entity.CityServer;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

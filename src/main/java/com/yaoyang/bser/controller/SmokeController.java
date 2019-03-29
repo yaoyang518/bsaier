@@ -9,6 +9,7 @@ import com.yaoyang.bser.repository.SomkeRepository;
 import com.yaoyang.bser.repository.SomkeSortRepository;
 import com.yaoyang.bser.service.UserService;
 import com.yaoyang.bser.util.DateUtil;
+import com.yaoyang.bser.util.JSONArrayUtil;
 import io.swagger.annotations.ApiOperation;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -148,7 +149,7 @@ public class SmokeController {
         } else {
             if (user.getLevel() == 1) {
                 if (user.getStid() != null) {
-                    return somkeSortRepository.getSomkeTimeCitySortByStid(user.getStid());
+                    return JSONArrayUtil.toJSONArray(somkeSortRepository.getSomkeTimeCitySortByStid(user.getStid()));
                 }
             } else {
                 jsonObject.put("x", 0);
@@ -171,10 +172,10 @@ public class SmokeController {
         } else {
             if (user.getLevel() == 2) {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
-                return somkeSortRepository.getSomkeTimeDotSortByStidAndCityID(cityServer.getStid(), cityServer.getCityID());
+                return JSONArrayUtil.toJSONArray(somkeSortRepository.getSomkeTimeDotSortByStidAndCityID(cityServer.getStid(), cityServer.getCityID()));
             } else if (user.getLevel() == 1) {
                 if (user.getStid() != null) {
-                    return somkeSortRepository.getSomkeTimeDotSortByStid(user.getStid());
+                    return JSONArrayUtil.toJSONArray(somkeSortRepository.getSomkeTimeDotSortByStid(user.getStid()));
                 }
             } else {
                 jsonObject.put("x", 0);

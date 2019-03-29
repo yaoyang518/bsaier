@@ -10,6 +10,7 @@ import com.yaoyang.bser.repository.CityServerRepository;
 import com.yaoyang.bser.repository.IndexRepository;
 import com.yaoyang.bser.service.UserService;
 import com.yaoyang.bser.util.DateUtil;
+import com.yaoyang.bser.util.JSONArrayUtil;
 import io.swagger.annotations.ApiOperation;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -211,7 +212,7 @@ public class AirpowerController {
         } else {
             if (user.getLevel() == 1) {
                 if (user.getStid() != null) {
-                    return airpowerSortRepository.getAirTimeCitySortByStid(user.getStid());
+                    return JSONArrayUtil.toJSONArray(airpowerSortRepository.getAirTimeCitySortByStid(user.getStid()));
                 }
             } else {
                 jsonObject.put("x", 0);
@@ -234,10 +235,10 @@ public class AirpowerController {
         } else {
             if (user.getLevel() == 2) {
                 CityServer cityServer = cityServerRepository.findByCid(user.getCid());
-                return airpowerSortRepository.getAirTimeDotSortByStidAndCityID(cityServer.getStid(), cityServer.getCityID());
+                return JSONArrayUtil.toJSONArray(airpowerSortRepository.getAirTimeDotSortByStidAndCityID(cityServer.getStid(), cityServer.getCityID()));
             } else if (user.getLevel() == 1) {
                 if (user.getStid() != null) {
-                    return airpowerSortRepository.getAirTimeDotSortByStid(user.getStid());
+                    return JSONArrayUtil.toJSONArray(airpowerSortRepository.getAirTimeDotSortByStid(user.getStid()));
                 }
             } else {
                 jsonObject.put("x", 0);
