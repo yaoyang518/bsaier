@@ -51,11 +51,6 @@
             <version>2.9.2</version>
         </dependency>
         <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.7.0</version>
-        </dependency>
-        <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
         </dependency>
@@ -87,18 +82,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.foxinmy</groupId>
-            <artifactId>weixin4j-qy</artifactId>
-            <version>1.7.8</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.foxinmy</groupId>
-            <artifactId>weixin4j-server</artifactId>
-            <version>1.1.8</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.mashape.unirest</groupId>
             <artifactId>unirest-java</artifactId>
             <version>RELEASE</version>
@@ -109,39 +92,6 @@
             <artifactId>okhttp</artifactId>
             <version>2.4.0</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.yunpian.sdk</groupId>
-            <artifactId>yunpian-java-sdk</artifactId>
-            <version>1.2.7</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.aliyun.oss</groupId>
-            <artifactId>aliyun-sdk-oss</artifactId>
-            <version>2.6.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>aliyun-java-sdk-cdn</artifactId>
-            <version>2.3.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>aliyun-java-sdk-core</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>aliyun-java-sdk-dm</artifactId>
-            <version>3.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alipay.sdk</groupId>
-            <artifactId>alipay-sdk-java</artifactId>
-            <version>3.3.49.ALL</version>
-        </dependency>
         <dependency>
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
@@ -151,20 +101,6 @@
             <groupId>jaxen</groupId>
             <artifactId>jaxen</artifactId>
             <version>1.1.1</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.foxinmy/weixin4j-mp -->
-        <dependency>
-            <groupId>com.foxinmy</groupId>
-            <artifactId>weixin4j-mp</artifactId>
-            <version>1.8.2</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>3.9</version>
         </dependency>
 
     </dependencies>
