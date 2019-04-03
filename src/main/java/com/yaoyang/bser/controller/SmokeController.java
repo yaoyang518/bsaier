@@ -56,7 +56,7 @@ public class SmokeController {
                 jsonObject.put("value", somkeRepository.getSmokeTimeByCityIdAndStidAndDate(cityServer.getCityID(), cityServer.getStid(), DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date())) == null ? 0 : somkeRepository.getSmokeTimeByCityIdAndStidAndDate(cityServer.getCityID(), cityServer.getStid(), DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date())));
             } else if (user.getLevel() == 1) {
                 if (user.getStid() != null) {
-                    jsonObject.put("value", somkeRepository.getSmokeTimeByDateAndStid(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), user.getStid()));
+                    jsonObject.put("value", somkeRepository.getSmokeTimeByDateAndStid(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), user.getStid()) == null ? 0 : somkeRepository.getSmokeTimeByDateAndStid(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date()), user.getStid()));
                 } else {
                     jsonObject.put("value", somkeRepository.getSmokeTimeByDate(DateUtil.getStartDate(new Date()), DateUtil.getEndDate(new Date())));
                 }
@@ -84,7 +84,7 @@ public class SmokeController {
                 jsonObject.put("value", somkeRepository.getSmokeTimeByCityIdAndStidAndDate(cityServer.getCityID(), cityServer.getStid(), DateUtil.getStartDate(new DateTime().minus(1l).toDate()), DateUtil.getEndDate(new DateTime().minus(1l).toDate())));
             } else if (user.getLevel() == 1) {
                 if (user.getStid() != null) {
-                    jsonObject.put("value", somkeRepository.getSmokeTimeByDateAndStid(DateUtil.getStartDate(new DateTime().minus(1l).toDate()), DateUtil.getEndDate(new DateTime().minus(1l).toDate()), user.getStid()));
+                    jsonObject.put("value", somkeRepository.getSmokeTimeByDateAndStid(DateUtil.getStartDate(new DateTime().minus(1l).toDate()), DateUtil.getEndDate(new DateTime().minus(1l).toDate()), user.getStid())==null?0:somkeRepository.getSmokeTimeByDateAndStid(DateUtil.getStartDate(new DateTime().minus(1l).toDate()), DateUtil.getEndDate(new DateTime().minus(1l).toDate()), user.getStid()));
                 } else {
                     jsonObject.put("value", somkeRepository.getSmokeTimeByDate(DateUtil.getStartDate(new DateTime().minus(1l).toDate()), DateUtil.getEndDate(new DateTime().minus(1l).toDate())));
                 }
